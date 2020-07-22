@@ -10,6 +10,12 @@ class SimpleGame {
 
         const config = {
             type: Phaser.AUTO,
+            physics: {
+                default: "arcade",
+                arcade: {
+                    gravity: {y: 0} // Top down game, so no gravity
+                }
+            },
             width: 800,
             height: 600,
             parent: "app",
