@@ -1,6 +1,7 @@
 import 'phaser';
 import BattlezoneScene from './BattlezoneScene';
 import MainMenuScene from './MainMenuScene';
+import GameoverScene from './GameoverScene';
 
 class SimpleGame {
     game: Phaser.Game;
@@ -25,9 +26,11 @@ class SimpleGame {
 
         let battlezoneScene = new BattlezoneScene();
         let mainmenuScene = new MainMenuScene();
+        let gameoverScene = new GameoverScene();
         this.game.scene.add("battlezone", battlezoneScene);
         this.game.scene.add("main-menu", mainmenuScene);
-        this.game.scene.start('main-menu');
+        this.game.scene.add("game-over", gameoverScene);
+        this.game.scene.start('game-over');
     }
 }
 
