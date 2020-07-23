@@ -6,8 +6,6 @@ class SimpleGame {
     controls: Phaser.Cameras.Controls.FixedKeyControl | undefined;
 
     constructor() {
-        let scene = new BattlezoneScene();
-
         const config = {
             type: Phaser.AUTO,
             physics: {
@@ -16,18 +14,18 @@ class SimpleGame {
                     gravity: {y: 0} // Top down game, so no gravity
                 }
             },
-            width: 800,
-            height: 600,
+            width: 1024,
+            height: 768,
             parent: "app",
-            pixelArt: true,
-            scene: scene
+            pixelArt: true
         };
 
         this.game = new Phaser.Game(config);
+
+        let battlezoneScene = new BattlezoneScene();
+        this.game.scene.add("battlezone", battlezoneScene);
+        this.game.scene.start('battlezone');
     }
-
-
-
 }
 
 export {SimpleGame as default};
