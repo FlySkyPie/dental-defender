@@ -22,17 +22,11 @@ class BattlezoneScene extends Phaser.Scene {
         const wallsLayer = map.createStaticLayer("walls", tileset, 0, 0);
 
         wallsLayer.setCollisionByProperty({collides: true});
-        const debugGraphics = this.add.graphics().setAlpha(0.75);
-        wallsLayer.renderDebug(debugGraphics, {
-            tileColor: null, // Color of non-colliding tiles
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        });
 
         this.player = this.physics.add
             .sprite(800, 300, "player", "right")
-            .setSize(25, 25)
-            .setOffset(0, 24);
+            .setSize(36, 36)
+            .setOffset(0, 0);
 
         const anims = this.anims;
         anims.create({
@@ -79,15 +73,13 @@ class BattlezoneScene extends Phaser.Scene {
         camera.startFollow(this.player);
         camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-        // Help text that has a "fixed" position on the screen
-        this.add
-            .text(16, 16, "Arrow keys to scroll", {
-                font: "18px monospace",
-                fill: "#ffffff",
-                padding: {x: 20, y: 10},
-                backgroundColor: "#000000"
-            })
-            .setScrollFactor(0);
+        this.physics.world.createDebugGraphic();
+        const debugGraphics = this.add.graphics().setAlpha(0.75);
+        wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null, // Color of non-colliding tiles
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        });
     }
 
     update(time: any, delta: any) {
@@ -119,19 +111,12 @@ class BattlezoneScene extends Phaser.Scene {
             this.player.anims.play("left", true);
         } else if (this.cursors.right.isDown) {
             this.player.anims.play("right", true);
-        }else {
+        } else {
             this.player.anims.stop();
 
             // If we were moving, pick and idle frame to use
             if (prevVelocity.x < 0) this.player.setTexture("player", "left-idle");
             else if (prevVelocity.x > 0) this.player.setTexture("player", "right-idle");
-        }
-
-
-        //super.update(time, delta);
-        if (this.controls !== undefined) {
-            this.controls.update(delta);
-
         }
     }
 }
