@@ -61,7 +61,6 @@ class ResourceLoader {
 
     //	This callback is sent the following parameters:
     loadProgressListener(percentage: number) {
-        console.log('progress: ' + percentage);
         let scene: any = this.scene;
 
         scene.progressBar.clear();

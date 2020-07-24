@@ -1,5 +1,6 @@
 import 'phaser';
 import BattlezoneScene from './BattlezoneScene';
+import Player from './Player';
 
 import Sprite = Phaser.GameObjects.Sprite;
 //import Scene = Phaser.Scene;
@@ -22,9 +23,7 @@ class Cursor extends Sprite {
         let x = this.x = this.scene.input.mousePointer.worldX;
         let y = this.y = this.scene.input.mousePointer.worldY;
         if (this.scene.input.mousePointer.isDown) {
-
-            this.scene.player.attack([x, y]);
-            console.log('fire');
+            (this.scene.player as Player).attack([x, y]);
         }
     }
 }
