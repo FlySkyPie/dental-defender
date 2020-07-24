@@ -30,7 +30,7 @@ class SimpleGame {
         this.game.scene.add("battlezone", battlezoneScene);
         this.game.scene.add("main-menu", mainmenuScene);
         this.game.scene.add("game-over", gameoverScene);
-        this.game.scene.start('game-over');
+        this.game.scene.start('main-menu');
     }
 }
 

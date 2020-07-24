@@ -1,5 +1,6 @@
 import 'phaser';
 import ResourceLoader from './ResourceLoader';
+import Player from'./Player';
 
 class BattlezoneScene extends Phaser.Scene {
     controls: Phaser.Cameras.Controls.FixedKeyControl | undefined;
@@ -35,10 +36,7 @@ class BattlezoneScene extends Phaser.Scene {
 
             wallsLayer.setCollisionByProperty({collides: true});
 
-            this.player = this.physics.add
-                .sprite(800, 300, "player", "right")
-                .setSize(36, 36)
-                .setOffset(0, 0);
+            this.player = new Player(this,[800,300]);
 
             const anims = this.anims;
             anims.create({
