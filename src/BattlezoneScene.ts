@@ -9,20 +9,21 @@ import Gumball from './entities/Gumball';
 import Team from './utils/Team';
 import AnimationLoader from './AnimationLoader';
 import ResourceLoader from './ResourceLoader';
+import CollisionLoader from './CollisionLoader';
 
 class BattlezoneScene extends Phaser.Scene {
-    tooth: Tooth | undefined;
-    player: Player | undefined;
-    bulletsGroup: Phaser.GameObjects.Group | undefined;
-    monstersGroup: Phaser.GameObjects.Group | undefined;
-    monsterBulletGroup: Phaser.GameObjects.Group | undefined;
+    tooth: Tooth | any;
+    player: Player | any;
+    bulletsGroup: Phaser.GameObjects.Group | any;
+    monstersGroup: Phaser.GameObjects.Group | any;
+    monsterBulletGroup: Phaser.GameObjects.Group | any;
 
     loader: ResourceLoader;
     isLoaded: boolean;
 
-    music: Phaser.Sound.WebAudioSound | undefined;
-    progressBar: Phaser.GameObjects.Graphics | undefined;
-    progressBox: Phaser.GameObjects.Graphics | undefined;
+    music: Phaser.Sound.WebAudioSound | any;
+    progressBar: Phaser.GameObjects.Graphics | any;
+    progressBox: Phaser.GameObjects.Graphics | any;
     wallsLayer: Phaser.Tilemaps.StaticTilemapLayer | any;
 
     constructor() {
@@ -57,49 +58,10 @@ class BattlezoneScene extends Phaser.Scene {
             this.tooth = new Tooth(this, [800, 400]);
 
             //test
-            new Gumball(this, [1250, 300]);
+            new Corn(this, [1250, 300]);
 
-            // Watch the player and worldLayer for collisions, for the duration of the scene:
-            this.physics.add.collider(this.player, this.wallsLayer);
-            this.physics.add.collider(this.player, this.tooth);
-            this.physics.add.collider(this.player, this.monstersGroup);
-
-            this.physics.add.collider(this.bulletsGroup, this.wallsLayer,
-                (bullet: any) => {bullet.destroy()});
-            this.physics.add.collider(this.bulletsGroup, this.tooth,
-                (bullet: any) => {
-                    bullet.destroy();
-                });
-            this.physics.add.collider(this.bulletsGroup, this.monstersGroup,
-                (bullet: any, monster: any) => {
-                    monster.damage(bullet.host.attackDamage, bullet.host);
-                    bullet.destroy();
-                });
-
-            this.physics.add.collider(this.monstersGroup, this.tooth, (monster: any, tooth: any) => {
-                if (monster instanceof Corn) {
-                    tooth.damage(30);
-                    monster.destroy();
-                } else if (monster instanceof Mint) {
-                    tooth.damage(20);
-                    monster.destroy();
-                }
-            });
-            this.physics.add.collider(this.monsterBulletGroup, this.wallsLayer,
-                (bullet: any) => {bullet.destroy()});
-            this.physics.add.collider(this.monsterBulletGroup, this.tooth,
-                (bullet: any, tooth: any) => {
-                    tooth.damage(10);
-                    bullet.destroy();
-                });
-            this.physics.add.collider(this.monsterBulletGroup, this.player,
-                (bullet: any, player: any) => {
-                    player.damage(10);
-                    bullet.destroy();
-                });
-
-
-
+            let collisionLoader = new CollisionLoader();
+            collisionLoader.load(this);
 
             const camera = this.cameras.main;
             camera.startFollow(this.player);
