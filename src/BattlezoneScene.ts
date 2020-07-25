@@ -11,6 +11,8 @@ import AnimationLoader from './loaders/AnimationLoader';
 import ResourceLoader from './loaders/ResourceLoader';
 import CollisionLoader from './loaders/CollisionLoader';
 
+import HeadUpDisplay from './HeadUpDisplay';
+
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;
     player: Player | any;
@@ -56,6 +58,8 @@ class BattlezoneScene extends Phaser.Scene {
             new Cursor(this);
             this.player = new Player(this, [800, 300]);
             this.tooth = new Tooth(this, [800, 400]);
+
+            new HeadUpDisplay(this, 0, 0);
 
             //test
             new Corn(this, [1250, 300]);

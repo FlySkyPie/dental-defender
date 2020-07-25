@@ -4,6 +4,7 @@ import Bullet from './Bullet';
 import BattlezoneScene from '../BattlezoneScene';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';
+import Inventory from '../Inventory';
 
 class Player extends Phaser.GameObjects.Sprite {
     scene: BattlezoneScene;
@@ -19,6 +20,8 @@ class Player extends Phaser.GameObjects.Sprite {
     direction: Direction;
     underAttack: boolean;
     underAttackTimer: number;
+    
+    inventory: Inventory;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
         super(scene, spawnPoint[0], spawnPoint[1], 'player');
@@ -38,6 +41,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.healthMax = 200;
         this.attackDamage = 10;
         this.team = Team.Red;
+        this.inventory = new Inventory();
 
         //visuolize stuff
         this.direction = Direction.Down;
