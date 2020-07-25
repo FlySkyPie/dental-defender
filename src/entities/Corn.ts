@@ -21,7 +21,7 @@ class Corn extends Monster {
     }
 
     update() {
-        if(!this.isLive){
+        if (!this.isLive) {
             return;
         }
         super.update();
@@ -57,6 +57,17 @@ class Corn extends Monster {
         this.state = State.Damaged;
         this.damageTimer = 0;
         super.damage(hitPoint, attacker);
+    }
+
+    destroy() {
+        let emitter = this.scene.add.particles('corn_die').createEmitter({
+            speed: {min: -100, max: 100},
+            frame: [0, 1, 2],
+            lifespan: 600
+        });
+        emitter.explode(12, this.x, this.y);
+
+        super.destroy();
     }
 }
 
