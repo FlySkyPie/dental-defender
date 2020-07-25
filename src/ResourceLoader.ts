@@ -18,7 +18,7 @@ class ResourceLoader {
         scene.progressBar = scene.add.graphics();
         scene.progressBox = scene.add.graphics();
         scene.progressBox.fillStyle(0x222222, 0.8);
-        scene.progressBox.fillRect(1024 / 2 -320/2, 600 - 50/2, 320, 50);
+        scene.progressBox.fillRect(1024 / 2 - 320 / 2, 600 - 50 / 2, 320, 50);
 
         scene.load.spritesheet('spinner', 'assets/spritesheets/spinner.png', {frameWidth: 15, frameHeight: 15});
     }
@@ -44,7 +44,7 @@ class ResourceLoader {
                 this.loadCompleteListener();
                 resolve();
             });
-            this.scene.load.on('loaderror', ()=>{
+            this.scene.load.on('loaderror', () => {
                 reject();
             });
             this.startLoad();
@@ -66,7 +66,7 @@ class ResourceLoader {
         scene.progressBar.clear();
         scene.progressBar.fillStyle(0xffffff, 1);
         let width = 300 * percentage;
-        scene.progressBar.fillRect(1024 / 2 -300/2, 600 - 30/2, width, 30);
+        scene.progressBar.fillRect(1024 / 2 - 300 / 2, 600 - 30 / 2, width, 30);
     }
 
     loadCompleteListener() {

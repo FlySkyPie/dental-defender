@@ -131,6 +131,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         let b = new Bullet(this.scene, [start_x, this.y + 2], angle, this);
         this.attackTimer = Date.now() + this.attackCoolDown;
+        this.scene.sound.play('player_shoot_sfx');
     }
 }
 

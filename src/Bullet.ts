@@ -13,7 +13,7 @@ class Bullet extends Sprite {
     life: number;
     constructor(scene: BattlezoneScene,
         spawnPoint: [number, number],
-        direction: number, host: Player | any) {
+        direction: number, host: Player) {
         super(scene, spawnPoint[0], spawnPoint[1], 'bullet');
         this.scene = scene;
         this.scene.add.existing(this);
@@ -30,9 +30,11 @@ class Bullet extends Sprite {
         this.speed = 550;
         this.body.velocity.x = Math.cos(direction) * this.speed;
         this.body.velocity.y = Math.sin(direction) * this.speed;
-
         (this.scene.bulletsGroup as Group).add(this);
-       // this.scene.physics.add.collider(this, this.scene.wallsLayer, () => {this.destroy()});
+
+        this.scene.events.on('update', () => {
+            this.update()
+        });
     }
     update() {
         super.update();
