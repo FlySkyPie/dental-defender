@@ -7,9 +7,9 @@ import Corn from './entities/Corn';
 import Mint from './entities/Mint';
 import Gumball from './entities/Gumball';
 import Team from './utils/Team';
-import AnimationLoader from './AnimationLoader';
-import ResourceLoader from './ResourceLoader';
-import CollisionLoader from './CollisionLoader';
+import AnimationLoader from './loaders/AnimationLoader';
+import ResourceLoader from './loaders/ResourceLoader';
+import CollisionLoader from './loaders/CollisionLoader';
 
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;

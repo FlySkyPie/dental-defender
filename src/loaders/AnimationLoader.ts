@@ -1,4 +1,4 @@
-import BattlezoneScene from './BattlezoneScene';
+import BattlezoneScene from '../BattlezoneScene';
 
 class AnimationLoader {
     constructor() {

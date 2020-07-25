@@ -1,5 +1,5 @@
 import 'phaser';
-import resourceJson from './data/resources.json';
+import resourceJson from '../data/resources.json';
 
 class ResourceLoader {
     resources: any;

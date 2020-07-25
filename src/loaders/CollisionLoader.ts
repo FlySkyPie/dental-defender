@@ -1,6 +1,6 @@
-import BattlezoneScene from './BattlezoneScene';
-import Corn from './entities/Corn';
-import Mint from './entities/Mint';
+import BattlezoneScene from '../BattlezoneScene';
+import Corn from '../entities/Corn';
+import Mint from '../entities/Mint';
 
 class CollisionLoader {
 
