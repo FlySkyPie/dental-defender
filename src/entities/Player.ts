@@ -1,8 +1,9 @@
 import 'phaser';
-import Direction from './utils/Direction';
+
 import Bullet from './Bullet';
-import BattlezoneScene from './BattlezoneScene';
-import Team from './utils/Team';
+import BattlezoneScene from '../BattlezoneScene';
+import Team from '../utils/Team';
+import Direction from '../utils/Direction';
 
 class Player extends Phaser.GameObjects.Sprite {
     scene: BattlezoneScene;

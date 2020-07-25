@@ -1,9 +1,10 @@
 import 'phaser';
-import ResourceLoader from './ResourceLoader';
-import Player from './Player';
-import Cursor from './Cursor';
+
+import Player from './entities/Player';
+import Cursor from './entities/Cursor';
+import Tooth from './entities/Tooth';
 import AnimationLoader from './AnimationLoader';
-import Tooth from './Tooth';
+import ResourceLoader from './ResourceLoader';
 
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | undefined;
