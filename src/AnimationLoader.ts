@@ -30,6 +30,20 @@ class AnimationLoader {
             frameRate: 7,
             repeat: 1
         });
+
+        anims.create({
+            key: "corn-left",
+            frames: anims.generateFrameNames("corn", {start: 4, end: 7}),
+            frameRate: 7,
+            repeat: 1
+        });
+
+        anims.create({
+            key: "corn-right",
+            frames: anims.generateFrameNames("corn", {start: 0, end: 3}),
+            frameRate: 7,
+            repeat: 1
+        });
     }
 
 

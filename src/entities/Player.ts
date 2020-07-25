@@ -21,7 +21,7 @@ class Player extends Phaser.GameObjects.Sprite {
     underAttackTimer: number;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
-        super(scene, spawnPoint[0], spawnPoint[1], 'Player');
+        super(scene, spawnPoint[0], spawnPoint[1], 'player');
         this.scene = scene;
         this.scene.add.existing(this);
         this.setSize(36, 36);

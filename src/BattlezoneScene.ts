@@ -3,6 +3,7 @@ import 'phaser';
 import Player from './entities/Player';
 import Cursor from './entities/Cursor';
 import Tooth from './entities/Tooth';
+import Corn from './entities/Corn';
 import AnimationLoader from './AnimationLoader';
 import ResourceLoader from './ResourceLoader';
 
@@ -34,6 +35,7 @@ class BattlezoneScene extends Phaser.Scene {
     create() {
         this.loader.create().then(() => {
             this.bulletsGroup = this.add.group();
+            this.monstersGroup = this.add.group();
 
             const map = this.make.tilemap({key: "test3"});
             const tileset = map.addTilesetImage("tileset", "tileset-image");
@@ -49,13 +51,32 @@ class BattlezoneScene extends Phaser.Scene {
             this.player = new Player(this, [800, 300]);
             this.tooth = new Tooth(this, [800, 400]);
 
+            //test
+            new Corn(this, [800, 600]);
+
             // Watch the player and worldLayer for collisions, for the duration of the scene:
             this.physics.add.collider(this.player, this.wallsLayer);
+
+            this.physics.add.collider(this.player, this.tooth);
             this.physics.add.collider(this.bulletsGroup, this.wallsLayer,
                 (bullet: any) => {bullet.destroy()});
-            this.physics.add.collider(this.player, this.tooth);
             this.physics.add.collider(this.bulletsGroup, this.tooth,
                 (bullet: any) => {bullet.destroy();});
+            this.physics.add.collider(this.bulletsGroup, this.monstersGroup,
+                (bullet: any, monster: any) => {
+                    monster.damage(bullet.host.attackDamage, bullet.host);
+                    bullet.destroy();
+                });
+
+            this.physics.add.collider(this.monstersGroup, this.tooth, (monster: any, tooth: any) => {
+                if (monster instanceof Corn) {
+                    tooth.damage(30);
+                    monster.destroy();
+                }
+            });
+
+
+
 
             const camera = this.cameras.main;
             camera.startFollow(this.player);

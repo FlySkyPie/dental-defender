@@ -25,6 +25,13 @@ class Tooth extends Phaser.GameObjects.Sprite {
         });
     }
 
+    damage(hitPoint: number) {
+        this.health -= hitPoint;
+        if (this.health <= 0) {
+            this.destroy();
+        }
+    }
+
     update() {
         let p = (this.health / this.healthMax);
         p = parseFloat(p.toFixed(1));
