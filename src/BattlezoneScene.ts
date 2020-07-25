@@ -6,16 +6,17 @@ import AnimationLoader from './AnimationLoader';
 import Tooth from './Tooth';
 
 class BattlezoneScene extends Phaser.Scene {
+    tooth: Tooth | undefined;
     player: Player | undefined;
-    music: Phaser.Sound.WebAudioSound | undefined;
     bulletsGroup: Phaser.GameObjects.Group | undefined;
+    monstersGroup: Phaser.GameObjects.Group | undefined;
 
     loader: ResourceLoader;
     isLoaded: boolean;
 
+    music: Phaser.Sound.WebAudioSound | undefined;
     progressBar: Phaser.GameObjects.Graphics | undefined;
     progressBox: Phaser.GameObjects.Graphics | undefined;
-
     wallsLayer: Phaser.Tilemaps.StaticTilemapLayer | any;
 
     constructor() {
@@ -45,13 +46,15 @@ class BattlezoneScene extends Phaser.Scene {
 
             new Cursor(this);
             this.player = new Player(this, [800, 300]);
-            let tooth = new Tooth(this, [800, 400]);
+            this.tooth = new Tooth(this, [800, 400]);
 
             // Watch the player and worldLayer for collisions, for the duration of the scene:
             this.physics.add.collider(this.player, this.wallsLayer);
-            this.physics.add.collider(this.bulletsGroup, this.wallsLayer, (bullet: any) => {bullet.destroy()});
-            this.physics.add.collider(this.player, tooth);
-            this.physics.add.collider(this.bulletsGroup, tooth, (bullet: any) => {bullet.destroy()});
+            this.physics.add.collider(this.bulletsGroup, this.wallsLayer,
+                (bullet: any) => {bullet.destroy()});
+            this.physics.add.collider(this.player, this.tooth);
+            this.physics.add.collider(this.bulletsGroup, this.tooth,
+                (bullet: any) => {bullet.destroy();});
 
             const camera = this.cameras.main;
             camera.startFollow(this.player);

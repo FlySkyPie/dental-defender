@@ -34,8 +34,13 @@ class Tooth extends Phaser.GameObjects.Sprite {
 
         this.healthBar.setFrame(10 - (p * 10));
     }
-    
-    destroy(){
+
+    /**
+     * Game over when the tooth has been destroyed.
+     */
+    destroy() {
+        this.scene.game.scene.start('game-over');
+        this.scene.game.scene.sleep('battlezone');
         super.destroy();
     }
 }
