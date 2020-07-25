@@ -44,6 +44,20 @@ class AnimationLoader {
             frameRate: 7,
             repeat: 1
         });
+
+        anims.create({
+            key: "mint-left",
+            frames: anims.generateFrameNames("mint", {start: 4, end: 7}),
+            frameRate: 7,
+            repeat: 1
+        });
+
+        anims.create({
+            key: "mint-right",
+            frames: anims.generateFrameNames("mint", {start: 0, end: 3}),
+            frameRate: 7,
+            repeat: 1
+        });
     }
 
 

@@ -54,6 +54,7 @@ class Corn extends Monster {
 
 
     damage(hitPoint: number, attacker: Sprite) {
+        this.target = attacker;
         this.state = State.Damaged;
         this.damageTimer = 0;
         super.damage(hitPoint, attacker);
