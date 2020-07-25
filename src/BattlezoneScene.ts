@@ -2,12 +2,12 @@ import 'phaser';
 import ResourceLoader from './ResourceLoader';
 import Player from './Player';
 import Cursor from './Cursor';
+import AnimationLoader from './AnimationLoader';
+import Tooth from './Tooth';
 
 class BattlezoneScene extends Phaser.Scene {
-    controls: Phaser.Cameras.Controls.FixedKeyControl | undefined;
     player: Player | undefined;
-    cursors: Cursor | undefined;
-    music: any;
+    music: Phaser.Sound.WebAudioSound | undefined;
     bulletsGroup: Phaser.GameObjects.Group | undefined;
 
     loader: ResourceLoader;
@@ -32,7 +32,7 @@ class BattlezoneScene extends Phaser.Scene {
     create() {
         this.loader.create().then(() => {
             this.bulletsGroup = this.add.group();
-            
+
             const map = this.make.tilemap({key: "test3"});
             const tileset = map.addTilesetImage("tileset", "tileset-image");
             const groundLayer = map.createStaticLayer("ground", tileset, 0, 0);
@@ -40,39 +40,18 @@ class BattlezoneScene extends Phaser.Scene {
             this.wallsLayer.setCollisionByProperty({collides: true});
             this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
+            let animationLoader = new AnimationLoader();
+            animationLoader.load(this);
+
             new Cursor(this);
-
-            const anims = this.anims;
-            anims.create({
-                key: "right",
-                frames: anims.generateFrameNames("player", {start: 0, end: 3}),
-                frameRate: 7,
-                repeat: 1
-            });
-            anims.create({
-                key: "right-idle",
-                frames: anims.generateFrameNames("player", {start: 0, end: 0}),
-                frameRate: 7,
-                repeat: 1
-            });
-            anims.create({
-                key: "left",
-                frames: anims.generateFrameNames("player", {start: 7, end: 4}),
-                frameRate: 7,
-                repeat: 1
-            });
-            anims.create({
-                key: "left-idle",
-                frames: anims.generateFrameNames("player", {start: 4, end: 4}),
-                frameRate: 7,
-                repeat: 1
-            });
-
             this.player = new Player(this, [800, 300]);
+            let tooth = new Tooth(this, [800, 400]);
 
             // Watch the player and worldLayer for collisions, for the duration of the scene:
             this.physics.add.collider(this.player, this.wallsLayer);
-            this.physics.add.collider(this.bulletsGroup, this.wallsLayer, (bullet:any) => {bullet.destroy()});
+            this.physics.add.collider(this.bulletsGroup, this.wallsLayer, (bullet: any) => {bullet.destroy()});
+            this.physics.add.collider(this.player, tooth);
+            this.physics.add.collider(this.bulletsGroup, tooth, (bullet: any) => {bullet.destroy()});
 
             const camera = this.cameras.main;
             camera.startFollow(this.player);
@@ -86,15 +65,12 @@ class BattlezoneScene extends Phaser.Scene {
                 faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
             });
 
-            this.music = this.sound.add('game_music');
+            this.music = (this.sound.add('game_music') as Phaser.Sound.WebAudioSound);
             this.music.setLoop(true);
             this.music.play();
 
             this.isLoaded = true;
         });
-
-        //this.scene.start('battlezone');
-        console.log('battlezone created!');//debug
     }
 
     update(time: any, delta: any) {
