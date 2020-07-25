@@ -4,6 +4,9 @@ import Player from './entities/Player';
 import Cursor from './entities/Cursor';
 import Tooth from './entities/Tooth';
 import Corn from './entities/Corn';
+import Mint from './entities/Mint';
+import Gumball from './entities/Gumball';
+import Team from './utils/Team';
 import AnimationLoader from './AnimationLoader';
 import ResourceLoader from './ResourceLoader';
 
@@ -12,6 +15,7 @@ class BattlezoneScene extends Phaser.Scene {
     player: Player | undefined;
     bulletsGroup: Phaser.GameObjects.Group | undefined;
     monstersGroup: Phaser.GameObjects.Group | undefined;
+    monsterBulletGroup: Phaser.GameObjects.Group | undefined;
 
     loader: ResourceLoader;
     isLoaded: boolean;
@@ -36,6 +40,7 @@ class BattlezoneScene extends Phaser.Scene {
         this.loader.create().then(() => {
             this.bulletsGroup = this.add.group();
             this.monstersGroup = this.add.group();
+            this.monsterBulletGroup = this.add.group();
 
             const map = this.make.tilemap({key: "test3"});
             const tileset = map.addTilesetImage("tileset", "tileset-image");
@@ -52,16 +57,19 @@ class BattlezoneScene extends Phaser.Scene {
             this.tooth = new Tooth(this, [800, 400]);
 
             //test
-            new Corn(this, [800, 600]);
+            new Gumball(this, [1250, 300]);
 
             // Watch the player and worldLayer for collisions, for the duration of the scene:
             this.physics.add.collider(this.player, this.wallsLayer);
-
             this.physics.add.collider(this.player, this.tooth);
+            this.physics.add.collider(this.player, this.monstersGroup);
+
             this.physics.add.collider(this.bulletsGroup, this.wallsLayer,
                 (bullet: any) => {bullet.destroy()});
             this.physics.add.collider(this.bulletsGroup, this.tooth,
-                (bullet: any) => {bullet.destroy();});
+                (bullet: any) => {
+                    bullet.destroy();
+                });
             this.physics.add.collider(this.bulletsGroup, this.monstersGroup,
                 (bullet: any, monster: any) => {
                     monster.damage(bullet.host.attackDamage, bullet.host);
@@ -72,8 +80,23 @@ class BattlezoneScene extends Phaser.Scene {
                 if (monster instanceof Corn) {
                     tooth.damage(30);
                     monster.destroy();
+                } else if (monster instanceof Mint) {
+                    tooth.damage(20);
+                    monster.destroy();
                 }
             });
+            this.physics.add.collider(this.monsterBulletGroup, this.wallsLayer,
+                (bullet: any) => {bullet.destroy()});
+            this.physics.add.collider(this.monsterBulletGroup, this.tooth,
+                (bullet: any, tooth: any) => {
+                    tooth.damage(10);
+                    bullet.destroy();
+                });
+            this.physics.add.collider(this.monsterBulletGroup, this.player,
+                (bullet: any, player: any) => {
+                    player.damage(10);
+                    bullet.destroy();
+                });
 
 
 

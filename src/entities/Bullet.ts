@@ -8,20 +8,22 @@ import Group = Phaser.GameObjects.Group;
 
 class Bullet extends Sprite {
     scene: BattlezoneScene;
-    host: Player;
+    host: any;
     speed: number;
     life: number;
     constructor(scene: BattlezoneScene,
         spawnPoint: [number, number],
-        direction: number, host: Player) {
+        direction: number, host: any) {
         super(scene, spawnPoint[0], spawnPoint[1], 'bullet');
         this.scene = scene;
         this.scene.add.existing(this);
 
         if (host.team === Team.Red) {
             this.setTexture('bullet');
+            (this.scene.bulletsGroup as Group).add(this);
         } else {
             this.setTexture('bullet_pink');
+            (this.scene.monsterBulletGroup as Group).add(this);
         }
         this.life = 75;
         this.host = host;
@@ -30,8 +32,7 @@ class Bullet extends Sprite {
         this.speed = 550;
         this.body.velocity.x = Math.cos(direction) * this.speed;
         this.body.velocity.y = Math.sin(direction) * this.speed;
-        (this.scene.bulletsGroup as Group).add(this);
-
+        
         this.scene.events.on('update', () => {
             this.update()
         });

@@ -115,8 +115,6 @@ class Player extends Phaser.GameObjects.Sprite {
             return;
         }
 
-        //this.scene.player_shoot_sfx.play();
-
         let start_x = this.x;
 
         if (this.direction === Direction.Left) {
@@ -128,11 +126,23 @@ class Player extends Phaser.GameObjects.Sprite {
         let x = target[0] - start_x;
         let y = target[1] - this.y;
 
-        let angle = Math.atan2(y,x);
+        let angle = Math.atan2(y, x);
 
         let b = new Bullet(this.scene, [start_x, this.y + 2], angle, this);
         this.attackTimer = Date.now() + this.attackCoolDown;
         this.scene.sound.play('player_shoot_sfx');
+    }
+
+    damage(hitPoint: number) {
+        this.scene.sound.play('player_hurt_sfx');
+        this.underAttack = true;
+        this.underAttackTimer = Date.now() + 500;
+        this.health -= hitPoint;
+        if (this.health <= 0) {
+            this.scene.game.scene.start('game-over');
+            this.scene.game.scene.sleep('battlezone');
+            //this.destroy();
+        }
     }
 }
 
