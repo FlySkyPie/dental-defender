@@ -1,5 +1,5 @@
 import 'phaser';
-import Team from './Team';
+import Team from './utils/Team';
 import BattlezoneScene from './BattlezoneScene';
 import Player from './Player';
 
