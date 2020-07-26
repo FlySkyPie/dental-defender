@@ -4,6 +4,7 @@ import Bullet from './Bullet';
 import BattlezoneScene from '../BattlezoneScene';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';
+import Item from '../utils/Item';
 import Inventory from '../Inventory';
 
 class Player extends Phaser.GameObjects.Sprite {
@@ -41,7 +42,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.healthMax = 200;
         this.attackDamage = 10;
         this.team = Team.Red;
-        this.inventory = new Inventory();
+        this.inventory = new Inventory(scene);
 
         //visuolize stuff
         this.direction = Direction.Down;
@@ -54,6 +55,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.update()
         });
 
+        //listen key events
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).on('down', () => {
             this.scene.events.emit('hud.selectItem', 0);
         });
@@ -66,7 +68,21 @@ class Player extends Phaser.GameObjects.Sprite {
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).on('down', () => {
             this.scene.events.emit('hud.selectItem', 3);
         });
+
+        //  Listen for events from it
+        this.scene.scene.get('battlezone').events
+            .on('player.earn', (value: number) => {
+                this.inventory.addMoney(value);
+            }).on('player.buy', (item: Item) => {
+                if (this.inventory.buyItem(item)) {
+
+
+                }
+            }).on('player.heal', (point: number) => {
+                this.heal(point);
+            });
     }
+
 
     update() {
         if (this.underAttack
@@ -81,21 +97,17 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (keyUp.isDown) {
             this.body.velocity.y = -this.speed;
-        }
-        else if (keyDown.isDown) {
+        } else if (keyDown.isDown) {
             this.body.velocity.y = this.speed;
-        }
-        else {
+        } else {
             this.body.velocity.y = 0;
         }
 
         if (keyLeft.isDown) {
             this.body.velocity.x = -this.speed;
-        }
-        else if (keyRight.isDown) {
+        } else if (keyRight.isDown) {
             this.body.velocity.x = this.speed;
-        }
-        else {
+        } else {
             this.body.velocity.x = 0;
         }
 
@@ -103,8 +115,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (dist >= 0) {
             this.direction = Direction.Right;
-        }
-        else {
+        } else {
             this.direction = Direction.Left;
         }
         let prefix = (this.direction === Direction.Right) ? 'right' : 'left';
@@ -112,16 +123,13 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.body.velocity.x != 0 || this.body.velocity.y != 0) {
             if (this.underAttack) {
                 this.anims.play(prefix + '-damaged', true);
-            }
-            else {
+            } else {
                 this.anims.play(prefix, true);
             }
-        }
-        else {
+        } else {
             if (this.underAttack) {
                 this.anims.play(prefix + '-idle-damaged');
-            }
-            else {
+            } else {
                 this.anims.play(prefix + '-idle')
             }
         }
@@ -161,6 +169,14 @@ class Player extends Phaser.GameObjects.Sprite {
             this.scene.game.scene.sleep('battlezone');
             //this.destroy();
         }
+    }
+
+    public heal(point: number) {
+        this.health += point
+        if (this.health > this.healthMax) {
+            this.health = this.healthMax;
+        }
+        this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
     }
 }
 

@@ -67,7 +67,7 @@ class Mint extends Monster {
             lifespan: 600
         });
         emitter.explode(12, this.x, this.y);
-
+        this.scene.events.emit('player.earn', 50);
         super.destroy();
     }
 }

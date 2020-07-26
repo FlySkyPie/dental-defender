@@ -88,7 +88,7 @@ class Gumball extends Monster {
             lifespan: 600
         });
         emitter.explode(12, this.x, this.y);
-
+        this.scene.events.emit('player.earn', 80);
         super.destroy();
     }
 
