@@ -6,7 +6,8 @@ import Tooth from './entities/Tooth';
 import Corn from './entities/Corn';
 import Mint from './entities/Mint';
 import Gumball from './entities/Gumball';
-import Team from './utils/Team';
+import Turret from './entities/Turret';
+import TurretType from './utils/TurretType';
 import AnimationLoader from './loaders/AnimationLoader';
 import ResourceLoader from './loaders/ResourceLoader';
 import CollisionLoader from './loaders/CollisionLoader';
@@ -17,6 +18,7 @@ class BattlezoneScene extends Phaser.Scene {
     bulletsGroup: Phaser.GameObjects.Group | any;
     monstersGroup: Phaser.GameObjects.Group | any;
     monsterBulletGroup: Phaser.GameObjects.Group | any;
+    turretsGroup: Phaser.GameObjects.Group | any;
 
     loader: ResourceLoader;
     isLoaded: boolean;
@@ -42,6 +44,7 @@ class BattlezoneScene extends Phaser.Scene {
             this.bulletsGroup = this.add.group();
             this.monstersGroup = this.add.group();
             this.monsterBulletGroup = this.add.group();
+            this.turretsGroup = this.add.group();
 
             const map = this.make.tilemap({key: "test3"});
             const tileset = map.addTilesetImage("tileset", "tileset-image");
@@ -60,7 +63,8 @@ class BattlezoneScene extends Phaser.Scene {
             //new HeadUpDisplay(this, 0, 0);
 
             //test
-            new Corn(this, [1250, 300]);
+            new Gumball(this, [1250, 300]);
+            new Turret(this, [1300, 300], TurretType.Small);
 
             let collisionLoader = new CollisionLoader();
             collisionLoader.load(this);
@@ -88,6 +92,23 @@ class BattlezoneScene extends Phaser.Scene {
     update(time: any, delta: any) {
 
 
+    }
+
+    scanMonsterPosition(position: [number, number], radius: number)
+        : [number, number] | undefined {
+        let monsters: Array<Phaser.GameObjects.Sprite>
+            = this.monstersGroup.getChildren();
+
+        for (let monster of monsters) {
+            let deltaX = position[0] - monster.x;
+            let deltaY = position[1] - monster.y;
+            let distance = Math.abs(Math.sqrt(deltaX * deltaX + deltaY * deltaY));
+            if (distance <= radius) {
+                return [monster.x, monster.y];
+            }
+        }
+
+        return undefined;
     }
 }
 
