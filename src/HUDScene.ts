@@ -1,4 +1,6 @@
 import 'phaser';
+import Loader from './loaders/ResourcePreloader';
+import json from './resources/hud.json';
 
 class HUDScene extends Phaser.Scene {
     healthText: Phaser.GameObjects.Text | undefined;
@@ -14,13 +16,8 @@ class HUDScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('toolbar_arrow', 'assets/images/toolbar_arrow.png');
-        this.load.image('toolbar_slot_background', 'assets/images/toolbar_slot_background.png');
-        this.load.image('gun_icon', 'assets/images/gun_icon.png');
-        this.load.image('hammer_icon', 'assets/images/hammer_icon.png');
-        this.load.image('turret_small_icon', 'assets/images/turret_small_icon.png');
-        this.load.image('turret_big_icon', 'assets/images/turret_big_icon.png');
-
+        let loader = new Loader(this);
+        loader.preload(json);
     }
 
     create() {
@@ -43,7 +40,7 @@ class HUDScene extends Phaser.Scene {
                 {font: "12px Arial", color: '#ffffff'});
             this.slotTexts.push(slotText);
         }
-        this.updateItemAmount([0,0,0]);
+        this.updateItemAmount([0, 0, 0]);
 
         //  Listen for events from it
         this.scene.get('battlezone').events
