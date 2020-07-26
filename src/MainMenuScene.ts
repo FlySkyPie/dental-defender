@@ -21,6 +21,7 @@ class MainMenuScene extends Phaser.Scene {
             .setFrame(0).setInteractive();
         startButton.on('pointerdown', () => {
             this.game.scene.start('battlezone');
+            this.game.scene.start('hud-scene');
             this.game.scene.stop('main-menu');
             this.music.stop();
         });

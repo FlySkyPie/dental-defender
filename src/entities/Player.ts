@@ -20,7 +20,7 @@ class Player extends Phaser.GameObjects.Sprite {
     direction: Direction;
     underAttack: boolean;
     underAttackTimer: number;
-    
+
     inventory: Inventory;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
@@ -52,6 +52,19 @@ class Player extends Phaser.GameObjects.Sprite {
         //CollisionManager.addObjectToGroup(this, 'players');
         this.scene.events.on('update', () => {
             this.update()
+        });
+
+        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).on('down', () => {
+            this.scene.events.emit('hud.selectItem', 0);
+        });
+        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).on('down', () => {
+            this.scene.events.emit('hud.selectItem', 1);
+        });
+        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).on('down', () => {
+            this.scene.events.emit('hud.selectItem', 2);
+        });
+        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).on('down', () => {
+            this.scene.events.emit('hud.selectItem', 3);
         });
     }
 
@@ -142,6 +155,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.underAttack = true;
         this.underAttackTimer = Date.now() + 500;
         this.health -= hitPoint;
+        this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
         if (this.health <= 0) {
             this.scene.game.scene.start('game-over');
             this.scene.game.scene.sleep('battlezone');
