@@ -1,0 +1,49 @@
+{
+    "images": [
+        {
+            "name": "overlay",
+            "path": "assets/images/overlay.png"
+        },
+        {
+            "name": "toolbar_slot_background",
+            "path": "assets/images/toolbar_slot_background.png"
+        }
+        , {
+            "name": "gun_icon",
+            "path": "assets/images/gun_icon.png"
+        }
+        , {
+            "name": "hammer_icon",
+            "path": "assets/images/hammer_icon.png"
+        },
+        {
+            "name": "turret_small_icon",
+            "path": "assets/images/turret_small_icon.png"
+        }
+        , {
+            "name": "turret_big_icon",
+            "path": "assets/images/turret_big_icon.png"
+        }
+    ]
+    ,
+    "spritesheets": [
+        {
+            "name": "player",
+            "path": "assets/spritesheets/player.png",
+            "width": 36,
+            "height": 36
+        }, {
+            "name": "buy_btn",
+            "path": "assets/spritesheets/buy_btn.png",
+            "width": 75,
+            "height": 30
+        }, {
+            "name": "ready_btn",
+            "path": "assets/spritesheets/ready_btn.png",
+            "width": 320,
+            "height": 60
+        }
+    ],
+    "tilemaps": [],
+    "audio": []
+} 
