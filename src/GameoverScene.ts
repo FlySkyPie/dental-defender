@@ -26,6 +26,8 @@ class GameoverScene extends Phaser.Scene {
         else {
             this.add.image(1024 / 2, 768 / 2, 'youlose');
         }
+        this.scene.sleep();
+        this.switcher.reportStandby(this);
     }
 }
 

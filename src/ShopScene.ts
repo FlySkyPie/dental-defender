@@ -1,7 +1,8 @@
 import 'phaser';
 import SceneSwitcher from './interfaces/SceneSwitcher';
+import BalanceMonitor from './interfaces/BalanceMonitor'
 
-class ShopScene extends Phaser.Scene {
+class ShopScene extends Phaser.Scene implements BalanceMonitor {
     private switcher: SceneSwitcher;
     waveTimeText: Phaser.GameObjects.Text | undefined;
     accuracyText: Phaser.GameObjects.Text | undefined;
@@ -77,6 +78,8 @@ class ShopScene extends Phaser.Scene {
             this.game.scene.wake('battlezone');
             this.game.scene.wake('hud-scene');
         })
+        this.scene.sleep();
+        this.switcher.reportStandby(this);
     }
 
     updateMoney(value: number) {
@@ -86,9 +89,9 @@ class ShopScene extends Phaser.Scene {
         this.moneyText.setText("Money Available: " + value.toString());
     }
 
-    updateItemAmount(itemAmount: Array<number>) {
+    updateStock(amounts: [number, number, number]): void {
         for (let i = 0; i < 3; i++) {
-            this.slotTexts[i + 1].setText(itemAmount[i].toString());
+            this.slotTexts[i + 1].setText(amounts[i].toString());
         }
     }
 

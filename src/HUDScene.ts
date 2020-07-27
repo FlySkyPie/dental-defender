@@ -1,7 +1,9 @@
 import 'phaser';
 import SceneSwitcher from './interfaces/SceneSwitcher';
+import BalanceMonitor from './interfaces/BalanceMonitor'
+import CharacterMonitor from './interfaces/CharacterMonitor';
 
-class HUDScene extends Phaser.Scene {
+class HUDScene extends Phaser.Scene implements BalanceMonitor, CharacterMonitor {
     private switcher: SceneSwitcher;
     healthText: Phaser.GameObjects.Text | undefined;
     moneyText: Phaser.GameObjects.Text | undefined;
@@ -40,26 +42,9 @@ class HUDScene extends Phaser.Scene {
                 {font: "12px Arial", color: '#ffffff'});
             this.slotTexts.push(slotText);
         }
-        this.updateItemAmount([0, 0, 0]);
-
-        //  Listen for events from it
-        this.scene.get('battlezone').events
-            .on('hud.selectItem', (value: number) => {
-                this.selectItem(value)
-            }).on('hud.updateHealth', (health: number, healthMax: number) => {
-                this.updateHealth(health, healthMax);
-            }).on('hud.updateMoney', (value: number) => {
-                this.updateMoney(value);
-            }).on('hud.updateItemAmount', (itemAmount: Array<number>) => {
-                this.updateItemAmount(itemAmount);
-            });
-    }
-
-    selectItem(value: number) {
-        if (this.arrowImage === undefined) {
-            return;
-        }
-        this.arrowImage.y = 22 + (value * 5) + (value * 32);
+        this.updateStock([0, 0, 0]);
+        this.scene.sleep();
+        this.switcher.reportStandby(this);
     }
 
     updateHealth(health: number, healthMax: number) {
@@ -70,16 +55,23 @@ class HUDScene extends Phaser.Scene {
         this.healthText.setText("Health: " + healthRatio + "%");
     }
 
-    updateMoney(value: number) {
+    updateSelectedItem(index: number): void {
+        if (this.arrowImage === undefined) {
+            return;
+        }
+        this.arrowImage.y = 22 + (index * 5) + (index * 32);
+
+    }
+    updateMoney(value: number): void {
         if (this.moneyText === undefined) {
             return;
         }
         this.moneyText.setText("Money: " + value.toString());
     }
 
-    updateItemAmount(itemAmount: Array<number>) {
+    updateStock(amounts: [number, number, number]): void {
         for (let i = 0; i < 3; i++) {
-            this.slotTexts[i + 1].setText(itemAmount[i].toString());
+            this.slotTexts[i + 1].setText(amounts[i].toString());
         }
     }
 }

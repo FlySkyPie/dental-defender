@@ -42,7 +42,7 @@ class Turret extends Phaser.GameObjects.Sprite {
         if (turretType === TurretType.Small) {
             this.setTexture('turret_small');
             this.setupTimeMax = 300;
-            this.setupTime = 0;
+            this.setupTime = 300;
             this.health = 200;
             this.healthMax = 200;
             this.name = "turret1";

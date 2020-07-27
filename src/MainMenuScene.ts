@@ -31,6 +31,8 @@ class MainMenuScene extends Phaser.Scene {
 
         this.music = this.sound.add('game_music');
         this.music.play();
+        this.scene.sleep();
+        this.switcher.reportStandby(this);
     }
 }
 

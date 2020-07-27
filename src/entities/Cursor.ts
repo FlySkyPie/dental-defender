@@ -20,6 +20,7 @@ class Cursor extends Sprite {
     }
 
     update() {
+        this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         let x = this.x = this.scene.input.mousePointer.worldX;
         let y = this.y = this.scene.input.mousePointer.worldY;
         if (this.scene.input.mousePointer.isDown) {

@@ -6,8 +6,9 @@ import Team from '../utils/Team';
 import Direction from '../utils/Direction';
 import Item from '../utils/Item';
 import Inventory from '../Inventory';
+import MainRole from '../interfaces/MainRole';
 
-class Player extends Phaser.GameObjects.Sprite {
+class Player extends Phaser.GameObjects.Sprite implements MainRole {
     scene: BattlezoneScene;
     speed: number;
     team: Team;
@@ -21,8 +22,6 @@ class Player extends Phaser.GameObjects.Sprite {
     direction: Direction;
     underAttack: boolean;
     underAttackTimer: number;
-
-    inventory: Inventory;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
         super(scene, spawnPoint[0], spawnPoint[1], 'player');
@@ -42,7 +41,6 @@ class Player extends Phaser.GameObjects.Sprite {
         this.healthMax = 200;
         this.attackDamage = 10;
         this.team = Team.Red;
-        this.inventory = new Inventory(scene);
 
         //visuolize stuff
         this.direction = Direction.Down;
@@ -50,73 +48,16 @@ class Player extends Phaser.GameObjects.Sprite {
         this.underAttackTimer = Date.now();
         this.anims.play('right', true);
 
-        //CollisionManager.addObjectToGroup(this, 'players');
         this.scene.events.on('update', () => {
             this.update()
         });
-
-        //listen key events
-        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).on('down', () => {
-            this.scene.events.emit('hud.selectItem', 0);
-        });
-        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).on('down', () => {
-            this.scene.events.emit('hud.selectItem', 1);
-        });
-        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).on('down', () => {
-            this.scene.events.emit('hud.selectItem', 2);
-        });
-        scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).on('down', () => {
-            this.scene.events.emit('hud.selectItem', 3);
-        });
-
-        //  Listen for events from it
-        this.scene.scene.get('battlezone').events
-            .on('player.earn', (value: number) => {
-                this.inventory.addMoney(value);
-            }).on('player.buy', (item: Item) => {
-                if (this.inventory.buyItem(item)) {
-
-
-                }
-            }).on('player.heal', (point: number) => {
-                this.heal(point);
-            });
     }
 
 
     update() {
         if (this.underAttack
             && Date.now() >= this.underAttackTimer) {
-
             this.underAttack = false;
-        }
-        let keyUp = this.scene.input.keyboard.addKey('W');  // Get key object
-        let keyDown = this.scene.input.keyboard.addKey('S');  // Get key object
-        let keyRight = this.scene.input.keyboard.addKey('D');  // Get key object
-        let keyLeft = this.scene.input.keyboard.addKey('A');  // Get key object
-
-        if (keyUp.isDown) {
-            this.body.velocity.y = -this.speed;
-        } else if (keyDown.isDown) {
-            this.body.velocity.y = this.speed;
-        } else {
-            this.body.velocity.y = 0;
-        }
-
-        if (keyLeft.isDown) {
-            this.body.velocity.x = -this.speed;
-        } else if (keyRight.isDown) {
-            this.body.velocity.x = this.speed;
-        } else {
-            this.body.velocity.x = 0;
-        }
-
-        let dist = this.scene.input.mousePointer.worldX - this.x;
-
-        if (dist >= 0) {
-            this.direction = Direction.Right;
-        } else {
-            this.direction = Direction.Left;
         }
         let prefix = (this.direction === Direction.Right) ? 'right' : 'left';
 
@@ -135,7 +76,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    attack(target: [number, number]) {
+    attack(target: [number, number]): void {
         if (Date.now() < this.attackTimer) {
             return;
         }
@@ -169,6 +110,23 @@ class Player extends Phaser.GameObjects.Sprite {
             this.scene.game.scene.sleep('battlezone');
             //this.destroy();
         }
+    }
+    
+    getSpeed(){
+        return this.speed;
+    }
+
+    setVelocity(value: [number, number]): void {
+        this.body.velocity.x = value[0];
+        this.body.velocity.y = value[1];
+    }
+
+    setDirection(value: Direction): void {
+        this.direction = value;
+    }
+
+    getPosition(): [number, number] {
+        return [this.x, this.y];
     }
 
     public heal(point: number) {

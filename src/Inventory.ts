@@ -1,12 +1,10 @@
-import 'phaser';
 import Item from './utils/Item';
 
-class Inventory extends Phaser.GameObjects.GameObject {
+class Inventory  {
     private money: number;
     private stock: [number, number, number];
-    
-    constructor(scene: Phaser.Scene) {
-        super(scene, 'inventory');
+
+    constructor() {
         this.money = 0;
         this.stock = [0, 0, 0];
     }
@@ -17,20 +15,43 @@ class Inventory extends Phaser.GameObjects.GameObject {
 
     addMoney(value: number) {
         this.money += value;
-        this.scene.events.emit('hud.updateMoney', this.money);
     }
 
     buyItem(item: Item): boolean {
-        if (item === Item.Hammer) {
-            return this.buyHammer();
-        } else if (item === Item.SmallTurret) {
-            return this.buySmallTurret();
-        } else if (item === Item.BigTurret) {
-            return this.buyBigTurret();
-        } else {
-            return this.buyAid();
+        let price = this.getPrice(item);
+
+        if (!this.spendMoney(price)) {
+            return false;
         }
-        return false;
+
+        switch (item) {
+            case Item.Hammer:
+                this.stock[0] += 1;
+                break;
+            case Item.SmallTurret:
+                this.stock[1] += 1;
+                break;
+            case Item.BigTurret:
+                this.stock[2] += 1;
+                break;
+            default:
+                //TODO: heal player
+                break;
+        }
+        return true;
+    }
+
+    private getPrice(item: Item) {
+        switch (item) {
+            case Item.Hammer:
+                return 650;
+            case Item.SmallTurret:
+                return 800;
+            case Item.BigTurret:
+                return 1500;
+            default:
+                return 500;
+        }
     }
 
     private spendMoney(value: number) {
@@ -38,43 +59,8 @@ class Inventory extends Phaser.GameObjects.GameObject {
             return false;
         }
         this.money -= value;
-        this.scene.events.emit('hud.updateMoney', this.money);
+        //TODO: update money display
         return true;
-    }
-
-    private buyHammer(): boolean {
-        if (this.spendMoney(650)) {
-            this.stock[0] += 1;
-            return true;
-        }
-        return false;
-    }
-
-    private buySmallTurret(): boolean {
-        if (this.spendMoney(800)) {
-            this.stock[1] += 1;
-            return true;
-        }
-        return false;
-    }
-
-    private buyBigTurret(): boolean {
-        if (this.spendMoney(1500)) {
-            this.stock[2] += 1;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Aid is not a item, it would been used immediately.
-     */
-    private buyAid(): boolean {
-        if (this.spendMoney(500)) {
-            this.scene.events.emit('player.heal', 50);
-            return true;
-        }
-        return false;
     }
 }
 

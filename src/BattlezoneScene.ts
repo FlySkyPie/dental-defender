@@ -12,6 +12,8 @@ import AnimationLoader from './loaders/AnimationLoader';
 import CollisionLoader from './loaders/CollisionLoader';
 import SceneSwitcher from './interfaces/SceneSwitcher';
 
+import Monitoer from './GameMonitor';
+
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;
     player: Player | undefined;
@@ -36,9 +38,7 @@ class BattlezoneScene extends Phaser.Scene {
 
     }
 
-
     create() {
-
         this.bulletsGroup = this.add.group();
         this.monstersGroup = this.add.group();
         this.monsterBulletGroup = this.add.group();
@@ -84,7 +84,8 @@ class BattlezoneScene extends Phaser.Scene {
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });
-
+        this.scene.sleep();
+        this.switcher.reportStandby(this);
     }
 
     update(time: any, delta: any) {
@@ -108,6 +109,13 @@ class BattlezoneScene extends Phaser.Scene {
 
         return undefined;
     }
+
+
+
+    getRole() {
+        return this.player;
     }
+
+}
 
 export {BattlezoneScene as default};
