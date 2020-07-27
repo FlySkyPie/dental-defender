@@ -1,64 +1,116 @@
-import BattlezoneScene from '../BattlezoneScene';
+import 'phaser';
+import Scene = Phaser.Scene;
+import TilemapLayer = Phaser.Tilemaps.StaticTilemapLayer;
+import Group = Phaser.GameObjects.Group;
+import GameObject = Phaser.GameObjects.GameObject;
+
+import Player from '../entities/Player';
 import Corn from '../entities/Corn';
 import Mint from '../entities/Mint';
-import Team from '../utils/Team';
+import Monster from '../entities/Monster';
+import Tooth from '../entities/Tooth';
+import Turret from '../entities/Turret'
+import Bullet from '../entities/Bullet';
 
 class CollisionLoader {
+    scene: Scene;
+    player: Player | undefined;
+    wallsLayer: TilemapLayer | undefined;
+    monstersGroup: Group | undefined;
+    turretsGroup: Group | undefined;
+    bulletsGroup: Group | undefined;
+    monsterBulletGroup: Group | undefined;
+    tooth: Tooth | undefined;
 
-    constructor() {
+    constructor(scene: Scene) {
+        this.scene = scene;
     }
 
-    load(scene: BattlezoneScene) {
-        scene.physics.add.collider(scene.player, scene.wallsLayer);
-        scene.physics.add.collider(scene.player, scene.turretsGroup);
-        scene.physics.add.collider(scene.monstersGroup, scene.turretsGroup);
+    addPlayer(player: Player) {
+        this.player = player;
+        return this;
+    }
 
-        scene.physics.add.collider(scene.player, scene.tooth);
-        scene.physics.add.collider(scene.monstersGroup, scene.player,
+    addWallsLayer(wallsLayer: TilemapLayer) {
+        this.wallsLayer = wallsLayer;
+        return this;
+    }
+
+    addMonstersGroup(monstersGroup: Group) {
+        this.monstersGroup = monstersGroup;
+        return this;
+    }
+    addTurretsGroup(turretsGroup: Group) {
+        this.turretsGroup = turretsGroup;
+        return this;
+    }
+    addBulletsGroup(bulletsGroup: Group) {
+        this.bulletsGroup = bulletsGroup;
+        return this;
+    }
+    addMonsterBulletGroup(monsterBulletGroup: Group) {
+        this.monsterBulletGroup = monsterBulletGroup;
+        return this;
+    }
+
+    addTooth(tooth: Tooth) {
+        this.tooth = tooth;
+        return this;
+    }
+
+    load() {
+        if (this.player === undefined
+            || this.wallsLayer === undefined
+            || this.turretsGroup === undefined
+            || this.monstersGroup === undefined
+            || this.bulletsGroup === undefined
+            || this.monsterBulletGroup === undefined
+            || this.tooth === undefined) {
+            return;
+        }
+        this.scene.physics.add.collider(this.player, this.wallsLayer);
+        this.scene.physics.add.collider(this.player, this.turretsGroup);
+        this.scene.physics.add.collider(this.monstersGroup, this.turretsGroup);
+        this.scene.physics.add.collider(this.player, this.tooth);
+        this.scene.physics.add.collider(this.monstersGroup, this.player,
             (monster: any, player: any) => {
                 if (monster instanceof Corn) {
-                    player.damage(20);
+                    (player as Player).damage(20);
                     monster.destroy();
                 } else if (monster instanceof Mint) {
-                    player.damage(10);
+                    (player as Player).damage(10);
                     monster.destroy();
                 }
             });
-
-        scene.physics.add.collider(scene.monstersGroup, scene.turretsGroup,
-            (monster: any, turret: any) => {
+        this.scene.physics.add.collider(this.monstersGroup, this.turretsGroup,
+            (monster: any | Monster, turret: any) => {
                 if (monster instanceof Corn) {
-                    turret.damage(20);
+                    (turret as Turret).damage(20);
                     monster.destroy();
                 } else if (monster instanceof Mint) {
-                    turret.damage(10);
+                    (turret as Turret).damage(10);
                     monster.destroy();
                 }
             });
-
-        scene.physics.add.collider(scene.bulletsGroup, scene.wallsLayer,
-            (bullet: any) => {bullet.destroy()});
-
-        scene.physics.add.collider(scene.bulletsGroup, scene.tooth,
+        this.scene.physics.add.collider(this.bulletsGroup, this.wallsLayer,
             (bullet: any) => {
-                bullet.destroy();
+                (bullet as Bullet).destroy()
             });
-
-
-        scene.physics.add.collider(scene.bulletsGroup, scene.monstersGroup,
+        this.scene.physics.add.collider(this.bulletsGroup, this.tooth,
+            (bullet: any) => {
+                (bullet as Bullet).destroy();
+            });
+        this.scene.physics.add.collider(this.bulletsGroup, this.monstersGroup,
             (bullet: any, monster: any) => {
                 monster.damage(bullet.host.attackDamage, bullet.host);
-                bullet.destroy();
+                (bullet as Bullet).destroy();
             });
-
-        scene.physics.add.collider(scene.monsterBulletGroup, scene.turretsGroup,
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.turretsGroup,
             (bullet: any, turret: any) => {
                 turret.damage(5);
-                bullet.destroy();
+                (bullet as Bullet).destroy();
             });
-
-
-        scene.physics.add.collider(scene.monstersGroup, scene.tooth, (monster: any, tooth: any) => {
+        this.scene.physics.add.collider(this.monstersGroup, this.tooth, (monster: any, tooth: any) => {
             if (monster instanceof Corn) {
                 tooth.damage(30);
                 monster.destroy();
@@ -67,17 +119,19 @@ class CollisionLoader {
                 monster.destroy();
             }
         });
-        scene.physics.add.collider(scene.monsterBulletGroup, scene.wallsLayer,
-            (bullet: any) => {bullet.destroy()});
-        scene.physics.add.collider(scene.monsterBulletGroup, scene.tooth,
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.wallsLayer,
+            (bullet: any) => {
+               (bullet as Bullet).destroy();
+            });
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.tooth,
             (bullet: any, tooth: any) => {
                 tooth.damage(10);
-                bullet.destroy();
+                (bullet as Bullet).destroy();
             });
-        scene.physics.add.collider(scene.monsterBulletGroup, scene.player,
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.player,
             (bullet: any, player: any) => {
                 player.damage(10);
-                bullet.destroy();
+                (bullet as Bullet).destroy();
             });
     }
 }

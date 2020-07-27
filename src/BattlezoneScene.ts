@@ -14,7 +14,7 @@ import SceneSwitcher from './interfaces/SceneSwitcher';
 
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;
-    player: Player | any;
+    player: Player | undefined;
     bulletsGroup: Phaser.GameObjects.Group | any;
     monstersGroup: Phaser.GameObjects.Group | any;
     monsterBulletGroup: Phaser.GameObjects.Group | any;
@@ -64,8 +64,14 @@ class BattlezoneScene extends Phaser.Scene {
         new Gumball(this, [1250, 300]);
         new Turret(this, [1300, 300], TurretType.Small);
 
-        let collisionLoader = new CollisionLoader();
-        collisionLoader.load(this);
+        let collisionLoader = new CollisionLoader(this);
+        collisionLoader.addPlayer(this.player)
+            .addWallsLayer(this.wallsLayer)
+            .addMonstersGroup(this.monstersGroup)
+            .addTurretsGroup(this.turretsGroup)
+            .addBulletsGroup(this.bulletsGroup)
+            .addMonsterBulletGroup(this.monsterBulletGroup)
+            .addTooth(this.tooth).load();
 
         const camera = this.cameras.main;
         camera.startFollow(this.player);
@@ -102,6 +108,6 @@ class BattlezoneScene extends Phaser.Scene {
 
         return undefined;
     }
-}
+    }
 
 export {BattlezoneScene as default};
