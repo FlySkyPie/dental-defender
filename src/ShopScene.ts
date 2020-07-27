@@ -1,26 +1,21 @@
 import 'phaser';
-import Loader from './loaders/ResourcePreloader';
-import json from './resources/shop.json';
-import eventsCenter from './utils/EventsCenter'
+import SceneSwitcher from './interfaces/SceneSwitcher';
 
 class ShopScene extends Phaser.Scene {
+    private switcher: SceneSwitcher;
     waveTimeText: Phaser.GameObjects.Text | undefined;
     accuracyText: Phaser.GameObjects.Text | undefined;
     moneyText: Phaser.GameObjects.Text | undefined;
 
     slotTexts: Array<Phaser.GameObjects.Text>;
-    constructor() {
+    constructor(switcher: SceneSwitcher) {
         super('shop-scene');
+        this.switcher = switcher;
         this.slotTexts = [];
-        
-        eventsCenter.on('shop.updateMoney', (value: number) => {this.updateMoney(value)});
     }
 
-
-
     preload() {
-        let loader = new Loader(this);
-        loader.preload(json);
+
     }
 
     create() {

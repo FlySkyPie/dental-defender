@@ -9,8 +9,8 @@ import Gumball from './entities/Gumball';
 import Turret from './entities/Turret';
 import TurretType from './utils/TurretType';
 import AnimationLoader from './loaders/AnimationLoader';
-import ResourceLoader from './loaders/ResourceLoader';
 import CollisionLoader from './loaders/CollisionLoader';
+import SceneSwitcher from './interfaces/SceneSwitcher';
 
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;
@@ -20,73 +20,65 @@ class BattlezoneScene extends Phaser.Scene {
     monsterBulletGroup: Phaser.GameObjects.Group | any;
     turretsGroup: Phaser.GameObjects.Group | any;
 
-    loader: ResourceLoader;
-    isLoaded: boolean;
-
     music: Phaser.Sound.WebAudioSound | any;
     progressBar: Phaser.GameObjects.Graphics | any;
     progressBox: Phaser.GameObjects.Graphics | any;
     wallsLayer: Phaser.Tilemaps.StaticTilemapLayer | any;
 
-    constructor() {
+    switcher: SceneSwitcher;
+
+    constructor(switcher: SceneSwitcher) {
         super('battlezone');
-        this.isLoaded = false;
-        this.loader = new ResourceLoader(this);
+        this.switcher = switcher;
     }
 
     preload() {
-        this.loader.preload();
+
     }
 
 
     create() {
-        this.loader.create().then(() => {
-            this.bulletsGroup = this.add.group();
-            this.monstersGroup = this.add.group();
-            this.monsterBulletGroup = this.add.group();
-            this.turretsGroup = this.add.group();
 
-            const map = this.make.tilemap({key: "test3"});
-            const tileset = map.addTilesetImage("tileset", "tileset-image");
-            const groundLayer = map.createStaticLayer("ground", tileset, 0, 0);
-            this.wallsLayer = map.createStaticLayer("walls", tileset, 0, 0);
-            this.wallsLayer.setCollisionByProperty({collides: true});
-            this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.bulletsGroup = this.add.group();
+        this.monstersGroup = this.add.group();
+        this.monsterBulletGroup = this.add.group();
+        this.turretsGroup = this.add.group();
 
-            let animationLoader = new AnimationLoader();
-            animationLoader.load(this);
+        const map = this.make.tilemap({key: "test3"});
+        const tileset = map.addTilesetImage("tileset", "tileset-image");
+        const groundLayer = map.createStaticLayer("ground", tileset, 0, 0);
+        this.wallsLayer = map.createStaticLayer("walls", tileset, 0, 0);
+        this.wallsLayer.setCollisionByProperty({collides: true});
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-            new Cursor(this);
-            this.player = new Player(this, [800, 300]);
-            this.tooth = new Tooth(this, [800, 400]);
+        let animationLoader = new AnimationLoader();
+        animationLoader.load(this);
 
-            //new HeadUpDisplay(this, 0, 0);
+        new Cursor(this);
+        this.player = new Player(this, [800, 300]);
+        this.tooth = new Tooth(this, [800, 400]);
 
-            //test
-            new Gumball(this, [1250, 300]);
-            new Turret(this, [1300, 300], TurretType.Small);
+        //new HeadUpDisplay(this, 0, 0);
 
-            let collisionLoader = new CollisionLoader();
-            collisionLoader.load(this);
+        //test
+        new Gumball(this, [1250, 300]);
+        new Turret(this, [1300, 300], TurretType.Small);
 
-            const camera = this.cameras.main;
-            camera.startFollow(this.player);
-            camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        let collisionLoader = new CollisionLoader();
+        collisionLoader.load(this);
 
-            this.physics.world.createDebugGraphic();
-            const debugGraphics = this.add.graphics().setAlpha(0.75);
-            this.wallsLayer.renderDebug(debugGraphics, {
-                tileColor: null, // Color of non-colliding tiles
-                collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-                faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-            });
+        const camera = this.cameras.main;
+        camera.startFollow(this.player);
+        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-            this.music = (this.sound.add('game_music') as Phaser.Sound.WebAudioSound);
-            this.music.setLoop(true);
-            this.music.play();
-
-            this.isLoaded = true;
+        this.physics.world.createDebugGraphic();
+        const debugGraphics = this.add.graphics().setAlpha(0.75);
+        this.wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null, // Color of non-colliding tiles
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
         });
+
     }
 
     update(time: any, delta: any) {

@@ -1,29 +1,25 @@
 import 'phaser';
+import SceneSwitcher from './interfaces/SceneSwitcher';
 
 class MainMenuScene extends Phaser.Scene {
+    private switcher: SceneSwitcher;
     music: any;
-    constructor() {
+    constructor(switcher: SceneSwitcher) {
         super('main-menu');
+        this.switcher = switcher;
     }
 
     preload() {
-        this.load.image('mainmenu_bg', 'assets/images/mainmenu_bg.png');
-        this.load.spritesheet('start_btn', 'assets/spritesheets/start_btn.png',
-            {frameWidth: 288, frameHeight: 71});
-        this.load.audio('game_music', 'assets/audio/spiff_tune_hazard.mp3');
-    }
 
+    }
 
     create() {
         this.add.image(0, 0, 'mainmenu_bg').setOrigin(0);
 
-        let startButton = this.add.image(1024 / 2 , 600, 'start_btn')
+        let startButton = this.add.image(1024 / 2, 600, 'start_btn')
             .setFrame(0).setInteractive();
         startButton.on('pointerdown', () => {
-            this.game.scene.start('battlezone');
-            this.game.scene.start('hud-scene');
-            this.game.scene.stop('main-menu');
-            this.music.stop();
+            this.switcher.startBattle();
         });
 
         startButton.on('pointerover', () => {

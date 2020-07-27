@@ -1,23 +1,23 @@
 import 'phaser';
-import Loader from './loaders/ResourcePreloader';
-import json from './resources/hud.json';
+import SceneSwitcher from './interfaces/SceneSwitcher';
 
 class HUDScene extends Phaser.Scene {
+    private switcher: SceneSwitcher;
     healthText: Phaser.GameObjects.Text | undefined;
     moneyText: Phaser.GameObjects.Text | undefined;
     slotTexts: Array<Phaser.GameObjects.Text>;
     arrowImage: Phaser.GameObjects.Image | undefined;
 
     selectedSlotIndex: number;
-    constructor() {
+    constructor(switcher: SceneSwitcher) {
         super('hud-scene');
+        this.switcher = switcher;
         this.slotTexts = []
         this.selectedSlotIndex = 0;
     }
 
     preload() {
-        let loader = new Loader(this);
-        loader.preload(json);
+
     }
 
     create() {
@@ -82,7 +82,6 @@ class HUDScene extends Phaser.Scene {
             this.slotTexts[i + 1].setText(itemAmount[i].toString());
         }
     }
-
 }
 
 export default HUDScene;
