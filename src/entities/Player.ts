@@ -1,7 +1,7 @@
 import 'phaser';
 
 import Bullet from './Bullet';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';
 import Item from '../utils/Item';

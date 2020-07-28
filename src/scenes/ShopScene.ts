@@ -1,6 +1,6 @@
 import 'phaser';
-import SceneSwitcher from './interfaces/SceneSwitcher';
-import BalanceMonitor from './interfaces/BalanceMonitor'
+import SceneSwitcher from '../interfaces/SceneSwitcher';
+import BalanceMonitor from '../interfaces/BalanceMonitor'
 
 class ShopScene extends Phaser.Scene implements BalanceMonitor {
     private switcher: SceneSwitcher;

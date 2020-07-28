@@ -1,5 +1,5 @@
 import 'phaser';
-import SceneSwitcher from './interfaces/SceneSwitcher';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
 
 class GameoverScene extends Phaser.Scene {
     private isWin: boolean;

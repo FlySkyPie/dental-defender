@@ -1,5 +1,5 @@
-import HUDScene from './HUDScene';
-import ShopScene from './ShopScene';
+import HUDScene from './scenes/HUDScene';
+import ShopScene from './scenes/ShopScene';
 import BalanceMonitor from './interfaces/BalanceMonitor'
 import CharacterMonitor from './interfaces/CharacterMonitor';
 

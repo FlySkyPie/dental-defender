@@ -2,7 +2,7 @@ import 'phaser';
 import Sprite = Phaser.GameObjects.Sprite;
 import Monster from './Monster';
 import Bullet from './Bullet';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 
 class Gumball extends Monster {

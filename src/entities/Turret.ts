@@ -1,5 +1,5 @@
 import 'phaser';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import TurretType from '../utils/TurretType';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';

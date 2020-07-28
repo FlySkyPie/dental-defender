@@ -1,5 +1,5 @@
 import 'phaser';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 
 class Tooth extends Phaser.GameObjects.Sprite {
     scene: BattlezoneScene;

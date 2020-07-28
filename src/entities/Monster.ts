@@ -1,7 +1,7 @@
 import 'phaser';
 import Sprite = Phaser.GameObjects.Sprite;
 import Group = Phaser.GameObjects.Group;
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import Player from './Player';
 import Team from '../utils/Team';
 import State from '../utils/MonsterState';

@@ -1,12 +1,12 @@
 import 'phaser';
 import Scene = Phaser.Scene;
 
-import BattlezoneScene from './BattlezoneScene';
-import MainMenuScene from './MainMenuScene';
-import GameoverScene from './GameoverScene';
-import HUDScene from './HUDScene';
-import ShopScene from './ShopScene';
-import LoadScene from './LoadScene';
+import BattlezoneScene from './scenes/BattlezoneScene';
+import MenuScene from './scenes/MenuScene';
+import GameoverScene from './scenes/GameoverScene';
+import HUDScene from './scenes/HUDScene';
+import ShopScene from './scenes/ShopScene';
+import LoadScene from './scenes/LoadScene';
 
 import SceneSwitcher from './interfaces/SceneSwitcher'
 import GameState from './utils/GameState';
@@ -20,7 +20,7 @@ class SimpleGame implements SceneSwitcher {
     private isStandby: Array<boolean>;
 
     battlezoneScene: BattlezoneScene;
-    mainmenuScene: MainMenuScene;
+    menuScene: MenuScene;
     gameoverScene: GameoverScene;
     hudScene: HUDScene;
     shopScene: ShopScene;
@@ -47,7 +47,7 @@ class SimpleGame implements SceneSwitcher {
         this.state = GameState.Load;
 
         this.battlezoneScene = new BattlezoneScene(this);
-        this.mainmenuScene = new MainMenuScene(this);
+        this.menuScene = new MenuScene(this);
         this.gameoverScene = new GameoverScene(this);
         this.hudScene = new HUDScene(this);
         this.shopScene = new ShopScene(this);
@@ -63,7 +63,7 @@ class SimpleGame implements SceneSwitcher {
     private addScenesToGame() {
         this.game.scene.add("load-scene", this.loadScene);
         this.game.scene.add("battlezone", this.battlezoneScene);
-        this.game.scene.add("main-menu", this.mainmenuScene);
+        this.game.scene.add("main-menu", this.menuScene);
         this.game.scene.add("hud-scene", this.hudScene);
         this.game.scene.add("game-over", this.gameoverScene);
         this.game.scene.add("shop-scene", this.shopScene);
@@ -85,7 +85,7 @@ class SimpleGame implements SceneSwitcher {
         if (this.state !== GameState.Start) {
             throw "report standby at wrong game state!";
         }
-        if (scene instanceof MainMenuScene) {
+        if (scene instanceof MenuScene) {
             this.isStandby[0] = true;
         } else if (scene instanceof BattlezoneScene) {
             this.isStandby[1] = true;
@@ -102,7 +102,7 @@ class SimpleGame implements SceneSwitcher {
         }
 
         console.log('created!');
-        this.mainmenuScene.scene.wake();
+        this.menuScene.scene.wake();
         this.state = GameState.Menu;
     }
 
@@ -119,7 +119,7 @@ class SimpleGame implements SceneSwitcher {
         }
         this.game.scene.wake('battlezone');
         this.game.scene.wake('hud-scene');
-        this.mainmenuScene.scene.sleep();
+        this.menuScene.scene.sleep();
 
     }
 

@@ -1,7 +1,7 @@
 import 'phaser';
-import SceneSwitcher from './interfaces/SceneSwitcher';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
 
-class MainMenuScene extends Phaser.Scene {
+class MenuScene extends Phaser.Scene {
     private switcher: SceneSwitcher;
     music: any;
     constructor(switcher: SceneSwitcher) {
@@ -36,4 +36,4 @@ class MainMenuScene extends Phaser.Scene {
     }
 }
 
-export {MainMenuScene as default};
+export {MenuScene as default};

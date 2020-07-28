@@ -1,7 +1,7 @@
 import 'phaser';
 import Sprite = Phaser.GameObjects.Sprite;
 import Monster from './Monster';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 
 class Mint extends Monster {

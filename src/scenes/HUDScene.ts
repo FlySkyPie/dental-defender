@@ -1,7 +1,7 @@
 import 'phaser';
-import SceneSwitcher from './interfaces/SceneSwitcher';
-import BalanceMonitor from './interfaces/BalanceMonitor'
-import CharacterMonitor from './interfaces/CharacterMonitor';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
+import BalanceMonitor from '../interfaces/BalanceMonitor'
+import CharacterMonitor from '../interfaces/CharacterMonitor';
 
 class HUDScene extends Phaser.Scene implements BalanceMonitor, CharacterMonitor {
     private switcher: SceneSwitcher;

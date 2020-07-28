@@ -1,5 +1,5 @@
 import 'phaser';
-import BattlezoneScene from '../BattlezoneScene';
+import BattlezoneScene from '../scenes/BattlezoneScene';
 import Player from './Player';
 
 import Sprite = Phaser.GameObjects.Sprite;

@@ -1,10 +1,11 @@
-import BattlezoneScene from '../BattlezoneScene';
+import 'phaser'
+import Scene = Phaser.Scene;
 
 class AnimationLoader {
     constructor() {
     }
 
-    load(scene: BattlezoneScene) {
+    load(scene: Scene) {
         const anims = scene.anims;
         anims.create({
             key: "right",
@@ -98,8 +99,6 @@ class AnimationLoader {
             repeat: 1
         });
     }
-
-
 }
 
 export {AnimationLoader as default};

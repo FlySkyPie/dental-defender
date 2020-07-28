@@ -1,18 +1,18 @@
 import 'phaser';
 
-import Player from './entities/Player';
-import Cursor from './entities/Cursor';
-import Tooth from './entities/Tooth';
-import Corn from './entities/Corn';
-import Mint from './entities/Mint';
-import Gumball from './entities/Gumball';
-import Turret from './entities/Turret';
-import TurretType from './utils/TurretType';
-import AnimationLoader from './loaders/AnimationLoader';
-import CollisionLoader from './loaders/CollisionLoader';
-import SceneSwitcher from './interfaces/SceneSwitcher';
+import Player from '../entities/Player';
+import Cursor from '../entities/Cursor';
+import Tooth from '../entities/Tooth';
+import Corn from '../entities/Corn';
+import Mint from '../entities/Mint';
+import Gumball from '../entities/Gumball';
+import Turret from '../entities/Turret';
+import TurretType from '../utils/TurretType';
+import AnimationLoader from '../loaders/AnimationLoader';
+import CollisionLoader from '../loaders/CollisionLoader';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
 
-import Monitoer from './GameMonitor';
+import Monitoer from '../GameMonitor';
 
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;

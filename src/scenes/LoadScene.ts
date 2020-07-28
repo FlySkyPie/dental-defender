@@ -1,7 +1,7 @@
 import 'phaser';
-import SceneSwitcher from './interfaces/SceneSwitcher';
-import Loader from './loaders/ResourcePreloader';
-import json from './data/resources.json';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
+import Loader from '../loaders/ResourcePreloader';
+import json from '../data/resources.json';
 
 class LoadScene extends Phaser.Scene {
     switcher: SceneSwitcher;
