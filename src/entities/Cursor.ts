@@ -24,7 +24,7 @@ class Cursor extends Sprite {
         this.wallLayer = wallLayer;
     }
 
-    isCollidedTile() {
+    private isCollidedTile() {
         if (this.wallLayer === undefined) {
             return false;
         }
@@ -36,19 +36,34 @@ class Cursor extends Sprite {
         return false;
     }
 
+    public isCollided(): boolean {
+        let body = (this.body as Phaser.Physics.Arcade.Body);
+        let collidedEntities = !body.touching.none || body.embedded;
+        let collidedTile = this.isCollidedTile();
+        return (collidedEntities || collidedTile);
+    }
+
+    public updateTexture(isDenied: boolean) {
+        if (isDenied) {
+            this.setTexture(this.imageKey + "_x");
+        } else {
+            this.setTexture(this.imageKey);
+        }
+    }
+
     update() {
         this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         this.x = this.scene.input.mousePointer.worldX;
         this.y = this.scene.input.mousePointer.worldY;
 
         //overlap detect
-        let body =(this.body as Phaser.Physics.Arcade.Body);
+        let body = (this.body as Phaser.Physics.Arcade.Body);
         let collidedEntities = !body.touching.none || body.embedded;
         let collidedTile = this.isCollidedTile();
-        if ( this.imageKey !== 'gun_cursor'){
-            if(collidedEntities || collidedTile ){
+        if (this.imageKey !== 'gun_cursor') {
+            if (collidedEntities || collidedTile) {
                 this.setTexture(this.imageKey + "_x");
-            }else{
+            } else {
                 this.setTexture(this.imageKey);
             }
         }

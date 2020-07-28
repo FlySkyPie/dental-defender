@@ -47,7 +47,7 @@ class BattlezoneScene extends Phaser.Scene {
         this.teethGroup = this.add.group();
 
         this.map = this.make.tilemap({key: "test3"});
-        const tileset = this.map.addTilesetImage("tileset-extrusion", "tileset-image");
+        const tileset = this.map.addTilesetImage("tileset", "tileset-image");
         const groundLayer = this.map.createStaticLayer("ground", tileset, 0, 0);
         this.wallsLayer = this.map.createStaticLayer("walls", tileset, 0, 0);
         this.wallsLayer.setCollisionByProperty({collides: true});
