@@ -155,13 +155,25 @@ class CollisionLoader {
             || this.teethGroup === undefined) {
             return;
         }
-        
-        this.scene.physics.add.overlap(cursor, this.playersGroup);
-        this.scene.physics.add.overlap(cursor, this.turretsGroup);
-        this.scene.physics.add.overlap(cursor, this.monstersGroup);
-        this.scene.physics.add.overlap(cursor, this.bulletsGroup);
-        this.scene.physics.add.overlap(cursor, this.monsterBulletGroup);
-        this.scene.physics.add.overlap(cursor, this.teethGroup);
+
+        this.scene.physics.add.overlap(cursor, this.playersGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
+        this.scene.physics.add.overlap(cursor, this.turretsGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
+        this.scene.physics.add.overlap(cursor, this.monstersGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
+        this.scene.physics.add.overlap(cursor, this.bulletsGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
+        this.scene.physics.add.overlap(cursor, this.monsterBulletGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
+        this.scene.physics.add.overlap(cursor, this.teethGroup, (cursor: any, entity: any) => {
+            cursor.updateEntity(entity);
+        });
     }
 }
 

@@ -91,7 +91,7 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
 
     updateStock(amounts: [number, number, number]): void {
         for (let i = 0; i < 3; i++) {
-            this.slotTexts[i + 1].setText(amounts[i].toString());
+            this.slotTexts[i].setText(amounts[i].toString());
         }
     }
 

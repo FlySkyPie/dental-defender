@@ -12,7 +12,7 @@ class Turret extends Phaser.GameObjects.Sprite {
     team: Team;
     isSetup: boolean;
     turretType: TurretType;
-    isLive:boolean;
+    isLive: boolean;
 
     setupTimeMax: number;
     setupTime: number;
@@ -182,6 +182,10 @@ class Turret extends Phaser.GameObjects.Sprite {
         healthRatio = parseFloat(healthRatio.toFixed(1));
 
         this.healthBar.setFrame(10 - (healthRatio * 10));
+    }
+
+    public fix() {
+        this.health = this.healthMax;
     }
 }
 

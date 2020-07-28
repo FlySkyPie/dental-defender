@@ -7,6 +7,7 @@ class Cursor extends Sprite {
     scene: Scene;
     imageKey: string;
     wallLayer: TilemapLayer | undefined;
+    entity: Phaser.GameObjects.GameObject | undefined;
     constructor(scene: Scene) {
         super(scene, 0, 0, 'gun_cursor');
         this.imageKey = 'gun_cursor';
@@ -51,22 +52,18 @@ class Cursor extends Sprite {
         }
     }
 
+    public updateEntity(entity: Phaser.GameObjects.GameObject) {
+        this.entity = entity;
+    }
+
+    public getLastCollided() {
+        return this.entity;
+    }
+
     update() {
         this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         this.x = this.scene.input.mousePointer.worldX;
         this.y = this.scene.input.mousePointer.worldY;
-
-        //overlap detect
-        let body = (this.body as Phaser.Physics.Arcade.Body);
-        let collidedEntities = !body.touching.none || body.embedded;
-        let collidedTile = this.isCollidedTile();
-        if (this.imageKey !== 'gun_cursor') {
-            if (collidedEntities || collidedTile) {
-                this.setTexture(this.imageKey + "_x");
-            } else {
-                this.setTexture(this.imageKey);
-            }
-        }
     }
 
     setMode(imageKey: string) {

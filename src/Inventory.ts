@@ -1,12 +1,30 @@
 import Item from './utils/Item';
 
-class Inventory  {
+class Inventory {
     private money: number;
     private stock: [number, number, number];
 
     constructor() {
         this.money = 0;
-        this.stock = [0, 0, 0];
+        this.stock = [10, 10, 10];
+    }
+    
+    getStock(){
+        return this.stock;
+    }
+
+    useItem(item: Item): boolean {
+        if (item === Item.Hammer && this.stock[0] > 0) {
+            this.stock[0] -= 1;
+            return true;
+        } else if (item === Item.SmallTurret && this.stock[1] > 0) {
+            this.stock[1] -= 1;
+            return true;
+        } else if (item === Item.BigTurret && this.stock[2] > 0) {
+            this.stock[2] -= 1;
+            return true;
+        }
+        return false;
     }
 
     getMoney(): number {

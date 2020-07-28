@@ -1,7 +1,9 @@
 enum Item {
+    Gun,
     Hammer,
     SmallTurret,
-    BigTurret
+    BigTurret,
+    Aid
 }
 
 export {Item as default};
