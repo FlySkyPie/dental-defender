@@ -69,8 +69,18 @@ class CollisionLoader {
             return;
         }
         this.scene.physics.add.collider(this.playersGroup, this.wallsLayer);
+        this.scene.physics.add.collider(this.monstersGroup, this.wallsLayer);
         this.scene.physics.add.collider(this.playersGroup, this.turretsGroup);
-        this.scene.physics.add.collider(this.monstersGroup, this.turretsGroup);
+        this.scene.physics.add.collider(this.monstersGroup, this.turretsGroup,
+            (monster: any, tooth: any) => {
+                if (monster instanceof Corn) {
+                    tooth.damage(30);
+                    monster.destroy();
+                } else if (monster instanceof Mint) {
+                    tooth.damage(20);
+                    monster.destroy();
+                }
+            });
         this.scene.physics.add.collider(this.playersGroup, this.teethGroup);
         this.scene.physics.add.collider(this.monstersGroup, this.playersGroup,
             (monster: any, player: any) => {
@@ -96,16 +106,16 @@ class CollisionLoader {
             (bullet: any) => {
                 (bullet as Bullet).destroy()
             });
-        this.scene.physics.add.collider(this.bulletsGroup, this.teethGroup,
+        this.scene.physics.add.overlap(this.bulletsGroup, this.teethGroup,
             (bullet: any) => {
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.bulletsGroup, this.monstersGroup,
+        this.scene.physics.add.overlap(this.bulletsGroup, this.monstersGroup,
             (bullet: any, monster: any) => {
                 monster.damage(bullet.host.attackDamage, bullet.host);
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monsterBulletGroup, this.turretsGroup,
+        this.scene.physics.add.overlap(this.monsterBulletGroup, this.turretsGroup,
             (bullet: any, turret: any) => {
                 turret.damage(5);
                 (bullet as Bullet).destroy();
@@ -123,12 +133,12 @@ class CollisionLoader {
             (bullet: any) => {
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monsterBulletGroup, this.teethGroup,
+        this.scene.physics.add.overlap(this.monsterBulletGroup, this.teethGroup,
             (bullet: any, tooth: any) => {
                 tooth.damage(10);
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monsterBulletGroup, this.playersGroup,
+        this.scene.physics.add.overlap(this.monsterBulletGroup, this.playersGroup,
             (bullet: any, player: any) => {
                 player.damage(10);
                 (bullet as Bullet).destroy();
