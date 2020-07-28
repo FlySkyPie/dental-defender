@@ -12,11 +12,8 @@ import AnimationLoader from '../loaders/AnimationLoader';
 import CollisionLoader from '../loaders/CollisionLoader';
 import SceneSwitcher from '../interfaces/SceneSwitcher';
 
-import Monitoer from '../GameMonitor';
-
 class BattlezoneScene extends Phaser.Scene {
-    tooth: Tooth | any;
-    player: Player | undefined;
+    map: Phaser.Tilemaps.Tilemap | undefined;
     playersGroup: Phaser.GameObjects.Group | any;
     teethGroup: Phaser.GameObjects.Group | any;
     bulletsGroup: Phaser.GameObjects.Group | any;
@@ -48,19 +45,17 @@ class BattlezoneScene extends Phaser.Scene {
         this.playersGroup = this.add.group();
         this.teethGroup = this.add.group();
 
-        const map = this.make.tilemap({key: "test3"});
-        const tileset = map.addTilesetImage("tileset", "tileset-image");
-        const groundLayer = map.createStaticLayer("ground", tileset, 0, 0);
-        this.wallsLayer = map.createStaticLayer("walls", tileset, 0, 0);
+        this.map = this.make.tilemap({key: "test3"});
+        const tileset = this.map.addTilesetImage("tileset", "tileset-image");
+        const groundLayer = this.map.createStaticLayer("ground", tileset, 0, 0);
+        this.wallsLayer = this.map.createStaticLayer("walls", tileset, 0, 0);
         this.wallsLayer.setCollisionByProperty({collides: true});
-        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
         let animationLoader = new AnimationLoader();
         animationLoader.load(this);
 
-        new Cursor(this);
-        this.player = new Player(this, [800, 300]);
-        this.tooth = new Tooth(this, [800, 400]);
+        let holyTooth = new Tooth(this, [800, 400]);
 
         //new HeadUpDisplay(this, 0, 0);
 
@@ -76,10 +71,6 @@ class BattlezoneScene extends Phaser.Scene {
             .addBulletsGroup(this.bulletsGroup)
             .addMonsterBulletGroup(this.monsterBulletGroup)
             .addTeethGroup(this.teethGroup).load();
-
-        const camera = this.cameras.main;
-        camera.startFollow(this.player);
-        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
         this.physics.world.createDebugGraphic();
         const debugGraphics = this.add.graphics().setAlpha(0.75);
@@ -114,10 +105,20 @@ class BattlezoneScene extends Phaser.Scene {
         return undefined;
     }
 
+    createPlayer() {
+        let player = new Player(this, [800, 300]);
+        const camera = this.cameras.main;
+        camera.startFollow(player);
+        let bounds = this.physics.world.bounds;
+        camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
 
+        new Cursor(this);
+        return player;
+    }
 
-    getRole() {
-        return this.player;
+    getTooth(): Phaser.GameObjects.Sprite {
+        let tooth = (this.teethGroup as Phaser.GameObjects.Group).getFirst(true);
+        return tooth;
     }
 
 }
