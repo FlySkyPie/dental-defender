@@ -5,14 +5,12 @@ import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 
 class Mint extends Monster {
-
-    target: Sprite;
     damageTimer: number;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
         super(scene, spawnPoint, 'mint', 20, 200);
 
-        this.target = (scene.tooth as Sprite);
+        this.target = (scene.getTooth() as Sprite);
         this.damageTimer = 0;
         this.anims.play('mint-left', true);
 
@@ -29,7 +27,7 @@ class Mint extends Monster {
 
         if (this.state === State.Tracking) {
             if (!this.isWithinFollowingRange(this.target)) {
-                this.target = (this.scene.tooth as Sprite);
+                 this.target = this.primeTarget;
             }
             this.moveTowards(this.target);
         }

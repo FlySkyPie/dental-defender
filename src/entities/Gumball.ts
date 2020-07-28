@@ -6,14 +6,12 @@ import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 
 class Gumball extends Monster {
-    target: Sprite;
     damageTimer: number;
     attackTimer: number;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
         super(scene, spawnPoint, 'gumball', 80, 70);
 
-        this.target = (scene.tooth as Sprite);
         this.damageTimer = 0;
         this.attackTimer = Date.now();
         this.anims.play('gumball-left', true);
@@ -35,7 +33,7 @@ class Gumball extends Monster {
             }
 
             if (!this.isWithinFollowingRange(this.target)) {
-                this.target = (this.scene.tooth as Sprite);
+                this.target = this.primeTarget;
             }
             this.moveTowards(this.target);
         }

@@ -8,6 +8,8 @@ import State from '../utils/MonsterState';
 
 abstract class Monster extends Sprite {
     scene: BattlezoneScene;
+    primeTarget: Sprite;
+    target: Sprite;
     health: number;
     healthMax: number;
     speed: number;
@@ -19,6 +21,7 @@ abstract class Monster extends Sprite {
     constructor(scene: BattlezoneScene, spawnPoint: [number, number],
         imageKey: string, health: number, speed: number) {
         super(scene, spawnPoint[0], spawnPoint[1], imageKey);
+        this.target = this.primeTarget = scene.getTooth();
         this.scene = scene;
         this.scene.add.existing(this);
 
@@ -37,6 +40,10 @@ abstract class Monster extends Sprite {
 
     update() {
         this.updateHealthBar();
+    }
+
+    public setTarget(target: Sprite) {
+        this.target = target;
     }
 
 
