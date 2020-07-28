@@ -11,6 +11,7 @@ import Monster from '../entities/Monster';
 import Tooth from '../entities/Tooth';
 import Turret from '../entities/Turret'
 import Bullet from '../entities/Bullet';
+import Cursor from '../entities/Cursor';
 
 class CollisionLoader {
     scene: Scene;
@@ -143,6 +144,24 @@ class CollisionLoader {
                 player.damage(10);
                 (bullet as Bullet).destroy();
             });
+    }
+
+    addCursor(cursor: Cursor) {
+        if (this.playersGroup === undefined
+            || this.turretsGroup === undefined
+            || this.monstersGroup === undefined
+            || this.bulletsGroup === undefined
+            || this.monsterBulletGroup === undefined
+            || this.teethGroup === undefined) {
+            return;
+        }
+        
+        this.scene.physics.add.overlap(cursor, this.playersGroup);
+        this.scene.physics.add.overlap(cursor, this.turretsGroup);
+        this.scene.physics.add.overlap(cursor, this.monstersGroup);
+        this.scene.physics.add.overlap(cursor, this.bulletsGroup);
+        this.scene.physics.add.overlap(cursor, this.monsterBulletGroup);
+        this.scene.physics.add.overlap(cursor, this.teethGroup);
     }
 }
 

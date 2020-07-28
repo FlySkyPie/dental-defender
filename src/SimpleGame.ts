@@ -34,11 +34,11 @@ class SimpleGame {
 
         stateManager.setSatrBattleCallback(() => {
             let gameMonitor = new GameMonitor(hudScene, shopScene);
-            let player = battlezoneScene.createPlayer();
-            if (player !== undefined) {
-                let controller = new PlayerController(battlezoneScene, player, gameMonitor);
-                controller.start();
-            }
+            let stuffs = battlezoneScene.createPlayer();
+
+            let controller = new PlayerController(battlezoneScene, stuffs[0], gameMonitor, stuffs[1]);
+            controller.start();
+
         })
 
         stateManager.setBattlezoneScene(battlezoneScene)

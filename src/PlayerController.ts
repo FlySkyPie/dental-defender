@@ -12,28 +12,35 @@ class PlayerController {
     monitor: Monitor;
     inventory: Inventory;
     cursor: Cursor;
-    constructor(scene: Scene, player: MainRole, monitor: Monitor) {
+    itemIndex: number;
+    constructor(scene: Scene, player: MainRole, monitor: Monitor, cursor: Cursor) {
         this.scene = scene;
         this.player = player;
         this.monitor = monitor;
         this.inventory = new Inventory()
-        this.cursor = new Cursor(scene);
+        this.cursor = cursor;
+
+        this.itemIndex = 0;
 
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE).on('down', () => {
             this.monitor.updateSelectedItem(0);
-            this.cursor.setTexture('gun_cursor')
+            this.cursor.setMode('gun_cursor');
+            this.itemIndex = 0;
         });
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO).on('down', () => {
             this.monitor.updateSelectedItem(1);
-            this.cursor.setTexture('hammer')
+            this.cursor.setMode('hammer');
+            this.itemIndex = 1;
         });
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE).on('down', () => {
             this.monitor.updateSelectedItem(2);
-            this.cursor.setTexture('turret_small')
+            this.cursor.setMode('turret_small');
+            this.itemIndex = 2;
         });
         scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR).on('down', () => {
             this.monitor.updateSelectedItem(3);
-            this.cursor.setTexture('turret_big')
+            this.cursor.setMode('turret_big');
+            this.itemIndex = 3;
         });
     }
 
@@ -80,7 +87,7 @@ class PlayerController {
             this.player.setDirection(Direction.Left)
         }
 
-        if (this.scene.input.mousePointer.isDown) {
+        if (this.scene.input.mousePointer.isDown && this.itemIndex === 0) {
             let x = this.cursor.x;
             let y = this.cursor.y;
             this.player.attack([x, y]);

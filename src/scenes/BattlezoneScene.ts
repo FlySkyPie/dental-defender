@@ -27,6 +27,7 @@ class BattlezoneScene extends Phaser.Scene {
     wallsLayer: Phaser.Tilemaps.StaticTilemapLayer | any;
 
     switcher: SceneSwitcher;
+    collisionLoader: CollisionLoader | undefined;
 
     constructor(switcher: SceneSwitcher) {
         super('battlezone');
@@ -46,7 +47,7 @@ class BattlezoneScene extends Phaser.Scene {
         this.teethGroup = this.add.group();
 
         this.map = this.make.tilemap({key: "test3"});
-        const tileset = this.map.addTilesetImage("tileset", "tileset-image");
+        const tileset = this.map.addTilesetImage("tileset-extrusion", "tileset-image");
         const groundLayer = this.map.createStaticLayer("ground", tileset, 0, 0);
         this.wallsLayer = this.map.createStaticLayer("walls", tileset, 0, 0);
         this.wallsLayer.setCollisionByProperty({collides: true});
@@ -63,8 +64,8 @@ class BattlezoneScene extends Phaser.Scene {
         new Gumball(this, [1250, 300]);
         new Turret(this, [1300, 300], TurretType.Small);
 
-        let collisionLoader = new CollisionLoader(this);
-        collisionLoader.addPlayersGroup(this.playersGroup)
+        this.collisionLoader = new CollisionLoader(this);
+        this.collisionLoader.addPlayersGroup(this.playersGroup)
             .addWallsLayer(this.wallsLayer)
             .addMonstersGroup(this.monstersGroup)
             .addTurretsGroup(this.turretsGroup)
@@ -105,15 +106,16 @@ class BattlezoneScene extends Phaser.Scene {
         return undefined;
     }
 
-    createPlayer() {
+    createPlayer(): [Player, Cursor] {
         let player = new Player(this, [800, 300]);
         const camera = this.cameras.main;
         camera.startFollow(player);
         let bounds = this.physics.world.bounds;
         camera.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-
-        new Cursor(this);
-        return player;
+        let cursor = new Cursor(this);
+        cursor.setWallLayer(this.wallsLayer);
+        this.collisionLoader!.addCursor(cursor);
+        return [player, cursor];
     }
 
     getTooth(): Phaser.GameObjects.Sprite {
