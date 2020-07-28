@@ -2,30 +2,24 @@ import 'phaser';
 import SceneSwitcher from '../interfaces/SceneSwitcher';
 
 class GameoverScene extends Phaser.Scene {
-    private isWin: boolean;
     private switcher: SceneSwitcher;
-    
+
     constructor(switcher: SceneSwitcher) {
         super('game-over');
         this.switcher = switcher;
-        this.isWin = false;
     }
 
-    setResult(value: boolean) {
-        this.isWin = value;
-    }
-
-    preload() {
-        
-    }
-
-    create() {
-        if (this.isWin) {
+    setResult(isWin: boolean) {
+        if (isWin) {
             this.add.image(1024 / 2, 768 / 2, 'youwin');
         }
         else {
             this.add.image(1024 / 2, 768 / 2, 'youlose');
         }
+        return this;
+    }
+
+    create() {
         this.scene.sleep();
         this.switcher.reportStandby(this);
     }

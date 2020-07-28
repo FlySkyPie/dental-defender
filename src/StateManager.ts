@@ -134,6 +134,7 @@ class StateManager implements SceneSwitcher {
         }
 
         (this.menuScene as MenuScene).scene.wake();
+        (this.loadScene as LoadScene).scene.sleep();
         this.state = GameState.Menu;
     }
 
@@ -180,9 +181,11 @@ class StateManager implements SceneSwitcher {
         }
         this.state = GameState.Gameover;
 
-        this.game.scene.sleep('battlezone');
-        this.game.scene.sleep('hud-scene');
-        this.game.scene.wake('gameover');
+        (this.gameoverScene as GameoverScene).setResult(isWin)
+            .scene.wake();
+
+        (this.battlezoneScene as Scene).scene.sleep();
+        (this.hudScene as Scene).scene.sleep();
     }
 }
 
