@@ -17,6 +17,8 @@ import Monitoer from '../GameMonitor';
 class BattlezoneScene extends Phaser.Scene {
     tooth: Tooth | any;
     player: Player | undefined;
+    playersGroup: Phaser.GameObjects.Group | any;
+    teethGroup: Phaser.GameObjects.Group | any;
     bulletsGroup: Phaser.GameObjects.Group | any;
     monstersGroup: Phaser.GameObjects.Group | any;
     monsterBulletGroup: Phaser.GameObjects.Group | any;
@@ -43,6 +45,8 @@ class BattlezoneScene extends Phaser.Scene {
         this.monstersGroup = this.add.group();
         this.monsterBulletGroup = this.add.group();
         this.turretsGroup = this.add.group();
+        this.playersGroup = this.add.group();
+        this.teethGroup = this.add.group();
 
         const map = this.make.tilemap({key: "test3"});
         const tileset = map.addTilesetImage("tileset", "tileset-image");
@@ -65,13 +69,13 @@ class BattlezoneScene extends Phaser.Scene {
         new Turret(this, [1300, 300], TurretType.Small);
 
         let collisionLoader = new CollisionLoader(this);
-        collisionLoader.addPlayer(this.player)
+        collisionLoader.addPlayersGroup(this.playersGroup)
             .addWallsLayer(this.wallsLayer)
             .addMonstersGroup(this.monstersGroup)
             .addTurretsGroup(this.turretsGroup)
             .addBulletsGroup(this.bulletsGroup)
             .addMonsterBulletGroup(this.monsterBulletGroup)
-            .addTooth(this.tooth).load();
+            .addTeethGroup(this.teethGroup).load();
 
         const camera = this.cameras.main;
         camera.startFollow(this.player);

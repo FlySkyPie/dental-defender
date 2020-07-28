@@ -1,11 +1,10 @@
 import 'phaser';
+import Group = Phaser.GameObjects.Group;
 
 import Bullet from './Bullet';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';
-import Item from '../utils/Item';
-import Inventory from '../Inventory';
 import MainRole from '../interfaces/MainRole';
 
 class Player extends Phaser.GameObjects.Sprite implements MainRole {
@@ -33,6 +32,7 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
         this.scene.physics.add.existing(this);
         this.speed = 150;
         (this.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
+        (this.scene.playersGroup as Group).add(this);
 
         //game stuff
         this.attackTimer = Date.now();

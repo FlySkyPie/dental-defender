@@ -15,7 +15,7 @@ class Tooth extends Phaser.GameObjects.Sprite {
 
         this.scene.physics.add.existing(this);
         (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
-        (this.scene.toothsGroup as Group).add(this);
+        (this.scene.teethGroup as Group).add(this);
 
         this.health = 500;
         this.healthMax = 500;

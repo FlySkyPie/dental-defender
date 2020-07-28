@@ -14,20 +14,25 @@ import Bullet from '../entities/Bullet';
 
 class CollisionLoader {
     scene: Scene;
-    player: Player | undefined;
     wallsLayer: TilemapLayer | undefined;
+    playersGroup: Group | undefined;
+    teethGroup: Group | undefined;
     monstersGroup: Group | undefined;
     turretsGroup: Group | undefined;
     bulletsGroup: Group | undefined;
     monsterBulletGroup: Group | undefined;
-    tooth: Tooth | undefined;
 
     constructor(scene: Scene) {
         this.scene = scene;
     }
 
-    addPlayer(player: Player) {
-        this.player = player;
+    addPlayersGroup(playerGroup: Group) {
+        this.playersGroup = playerGroup;
+        return this;
+    }
+
+    addTeethGroup(teethGroup: Group) {
+        this.teethGroup = teethGroup;
         return this;
     }
 
@@ -53,26 +58,21 @@ class CollisionLoader {
         return this;
     }
 
-    addTooth(tooth: Tooth) {
-        this.tooth = tooth;
-        return this;
-    }
-
     load() {
-        if (this.player === undefined
+        if (this.playersGroup === undefined
             || this.wallsLayer === undefined
             || this.turretsGroup === undefined
             || this.monstersGroup === undefined
             || this.bulletsGroup === undefined
             || this.monsterBulletGroup === undefined
-            || this.tooth === undefined) {
+            || this.teethGroup === undefined) {
             return;
         }
-        this.scene.physics.add.collider(this.player, this.wallsLayer);
-        this.scene.physics.add.collider(this.player, this.turretsGroup);
+        this.scene.physics.add.collider(this.playersGroup, this.wallsLayer);
+        this.scene.physics.add.collider(this.playersGroup, this.turretsGroup);
         this.scene.physics.add.collider(this.monstersGroup, this.turretsGroup);
-        this.scene.physics.add.collider(this.player, this.tooth);
-        this.scene.physics.add.collider(this.monstersGroup, this.player,
+        this.scene.physics.add.collider(this.playersGroup, this.teethGroup);
+        this.scene.physics.add.collider(this.monstersGroup, this.playersGroup,
             (monster: any, player: any) => {
                 if (monster instanceof Corn) {
                     (player as Player).damage(20);
@@ -96,7 +96,7 @@ class CollisionLoader {
             (bullet: any) => {
                 (bullet as Bullet).destroy()
             });
-        this.scene.physics.add.collider(this.bulletsGroup, this.tooth,
+        this.scene.physics.add.collider(this.bulletsGroup, this.teethGroup,
             (bullet: any) => {
                 (bullet as Bullet).destroy();
             });
@@ -110,7 +110,7 @@ class CollisionLoader {
                 turret.damage(5);
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monstersGroup, this.tooth, (monster: any, tooth: any) => {
+        this.scene.physics.add.collider(this.monstersGroup, this.teethGroup, (monster: any, tooth: any) => {
             if (monster instanceof Corn) {
                 tooth.damage(30);
                 monster.destroy();
@@ -121,14 +121,14 @@ class CollisionLoader {
         });
         this.scene.physics.add.collider(this.monsterBulletGroup, this.wallsLayer,
             (bullet: any) => {
-               (bullet as Bullet).destroy();
+                (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monsterBulletGroup, this.tooth,
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.teethGroup,
             (bullet: any, tooth: any) => {
                 tooth.damage(10);
                 (bullet as Bullet).destroy();
             });
-        this.scene.physics.add.collider(this.monsterBulletGroup, this.player,
+        this.scene.physics.add.collider(this.monsterBulletGroup, this.playersGroup,
             (bullet: any, player: any) => {
                 player.damage(10);
                 (bullet as Bullet).destroy();
