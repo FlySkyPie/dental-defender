@@ -2,7 +2,7 @@ import 'phaser';
 import Scene = Phaser.Scene;
 
 interface SceneSwitcher {
-    startGame(): void;
+    goMenu(): void;
     reportStandby(scene: Scene): void;
     startBattle(): void;
     goShop(): void;

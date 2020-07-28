@@ -1,6 +1,6 @@
 enum GameState {
     Load,
-    Start,
+    StartingScenes,
     Menu,
     Battle,
     Shop,

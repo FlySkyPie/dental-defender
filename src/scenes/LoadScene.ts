@@ -37,7 +37,7 @@ class LoadScene extends Phaser.Scene {
             this.loadProgressListener(percentage);
         });
         this.load.on('complete', () => {
-            this.switcher.startGame();
+            this.switcher.goMenu();
         });
         
         let loader = new Loader(this);
