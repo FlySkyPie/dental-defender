@@ -48,6 +48,7 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
         this.underAttackTimer = Date.now();
         this.anims.play('right', true);
 
+        //this.setActive(true);
         this.scene.events.on('update', () => {
             this.update()
         });
@@ -96,23 +97,22 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
 
         let b = new Bullet(this.scene, [start_x, this.y + 2], angle, this);
         this.attackTimer = Date.now() + this.attackCoolDown;
-        this.scene.sound.play('player_shoot_sfx');
+        this.scene.sound.play('player_shoot_sfx', {volume: 0.2});
     }
 
     damage(hitPoint: number) {
-        this.scene.sound.play('player_hurt_sfx');
+        this.scene.sound.play('player_hurt_sfx', {volume: 0.4});
         this.underAttack = true;
         this.underAttackTimer = Date.now() + 500;
         this.health -= hitPoint;
         this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
         if (this.health <= 0) {
-            this.scene.game.scene.start('game-over');
-            this.scene.game.scene.sleep('battlezone');
+            this.scene.switcher.gameover(false);
             //this.destroy();
         }
     }
-    
-    getSpeed(){
+
+    getSpeed() {
         return this.speed;
     }
 

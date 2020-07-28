@@ -3,14 +3,10 @@ import SceneSwitcher from '../interfaces/SceneSwitcher';
 
 class MenuScene extends Phaser.Scene {
     private switcher: SceneSwitcher;
-    music: any;
+    music: Phaser.Sound.BaseSound | undefined;
     constructor(switcher: SceneSwitcher) {
         super('main-menu');
         this.switcher = switcher;
-    }
-
-    preload() {
-
     }
 
     create() {
@@ -29,7 +25,10 @@ class MenuScene extends Phaser.Scene {
             startButton.setFrame(0);
         });
 
-        this.music = this.sound.add('game_music');
+        this.music = this.sound.add('game_music', {
+            volume: 0.4,
+            loop: true,
+        });
         this.music.play();
         this.scene.sleep();
         this.switcher.reportStandby(this);

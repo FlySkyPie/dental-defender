@@ -86,7 +86,7 @@ abstract class Monster extends Sprite {
     destroy() {
         this.isLive = false;
         //TODO: create particle.
-        this.scene.sound.play('baddie_die_sfx', {volume: 0.4});
+        this.scene.sound.play('baddie_die_sfx', {volume: 0.1});
         this.healthBar.destroy();
         super.destroy();
     }

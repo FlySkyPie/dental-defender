@@ -1,5 +1,6 @@
 import 'phaser';
 import BattlezoneScene from '../scenes/BattlezoneScene';
+import Group = Phaser.GameObjects.Group;
 
 class Tooth extends Phaser.GameObjects.Sprite {
     scene: BattlezoneScene;
@@ -14,6 +15,7 @@ class Tooth extends Phaser.GameObjects.Sprite {
 
         this.scene.physics.add.existing(this);
         (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
+        (this.scene.toothsGroup as Group).add(this);
 
         this.health = 500;
         this.healthMax = 500;

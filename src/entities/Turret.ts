@@ -162,7 +162,7 @@ class Turret extends Phaser.GameObjects.Sprite {
 
 
         this.attackTimer = Date.now() + this.attackCooldown;
-        this.scene.sound.play('player_shoot_sfx');
+        this.scene.sound.play('player_shoot_sfx', {volume: 0.2});
     }
 
     /**

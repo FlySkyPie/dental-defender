@@ -103,7 +103,7 @@ class Gumball extends Monster {
 
         let b = new Bullet(this.scene, [this.x, this.y], angle, this);
         this.attackTimer = Date.now() + 1 * 1000;
-        this.scene.sound.play('player_shoot_sfx');
+        this.scene.sound.play('player_shoot_sfx', {volume: 0.2});
     }
 }
 
