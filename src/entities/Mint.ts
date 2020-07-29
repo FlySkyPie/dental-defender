@@ -4,16 +4,19 @@ import Monster from './Monster';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 import DeathRegistration from '../interfaces/DeathRegistration';
+import FinancialBody from '../interfaces/FinancialBody';
 
 class Mint extends Monster {
     damageTimer: number;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number], reporter: DeathRegistration) {
-        super(scene, spawnPoint, 'mint', 20, 200, reporter);
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], reporter: DeathRegistration,
+        financialBody: FinancialBody) {
+        super(scene, spawnPoint, 'mint', 20, 200, reporter,financialBody);
 
         this.target = (scene.getTooth() as Sprite);
         this.damageTimer = 0;
         this.anims.play('mint-left', true);
+        this.bonus = 50;
 
         this.scene.events.on('update', () => {
             this.update()

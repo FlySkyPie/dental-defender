@@ -9,8 +9,9 @@ import Cursor from './entities/Cursor';
 import Item from './utils/Item';
 import Turret from './entities/Turret';
 import TurretType from './utils/TurretType';
+import FinancialBody from './interfaces/FinancialBody';
 
-class PlayerController {
+class PlayerController implements FinancialBody {
     scene: Scene;
     player: MainRole;
     monitor: Monitor;
@@ -79,6 +80,23 @@ class PlayerController {
                 this.monitor.updateStock(this.inventory.getStock());
             }
         });
+    }
+
+    earn(money: number): void{
+        this.inventory.addMoney(money);
+        this.monitor.updateMoney(this.inventory.getMoney());
+    }
+
+    /**
+     * buy item, return false if do not have money enough.
+     */
+    buy(item: Item): boolean{
+        let isBuy = this.inventory.buyItem(item);
+        if (isBuy){
+            this.monitor.updateStock(this.inventory.getStock());
+            this.monitor.updateMoney(this.inventory.getMoney());
+        }
+        return isBuy;
     }
 
     start() {

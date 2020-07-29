@@ -5,17 +5,20 @@ import Bullet from './Bullet';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
 import DeathRegistration from '../interfaces/DeathRegistration';
+import FinancialBody from '../interfaces/FinancialBody';
 
 class Gumball extends Monster {
     damageTimer: number;
     attackTimer: number;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number],reporter: DeathRegistration) {
-        super(scene, spawnPoint, 'gumball', 80, 70, reporter);
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], reporter: DeathRegistration,
+        financialBody: FinancialBody) {
+        super(scene, spawnPoint, 'gumball', 80, 70, reporter, financialBody);
 
         this.damageTimer = 0;
         this.attackTimer = Date.now();
         this.anims.play('gumball-left', true);
+        this.bonus = 80;
 
         this.scene.events.on('update', () => {
             this.update()

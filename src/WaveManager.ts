@@ -8,6 +8,7 @@ import Mint from './entities/Mint';
 import Inventory from './MonsterInventory';
 import MonsterType from './utils/MonsterType';
 import DeathRegistration from './interfaces/DeathRegistration'
+import FinancialBody from './interfaces/FinancialBody'
 
 import json from './data/waves.json';
 
@@ -20,6 +21,7 @@ enum State {
 class WaveManager implements DeathRegistration {
     scene: Scene;
     switcher: SceneSwitcher;
+    financialBody: FinancialBody | undefined;
     currentWave: number;
     state: State;
     countDown: number;
@@ -90,6 +92,10 @@ class WaveManager implements DeathRegistration {
         this.sendMonsters();
     }
 
+    public setFinancialBody(body: FinancialBody) {
+        this.financialBody = body;
+    }
+
     private startWave() {
         this.state = State.SPAWNING;
         this.sendMonsters();
@@ -111,22 +117,22 @@ class WaveManager implements DeathRegistration {
             (this.monsterMax - this.currentMonster),
             this.inventory.getTotalStock()
         );
+        
+        if (this.financialBody === undefined){
+            throw 'financialBody undefinded';
+        }
 
         for (let i = 0; i < newSendMonster; i++) {
             let monster = this.inventory.getRandMonster();
             let position = this.getRandomSpawnPosition();
             this.currentMonster += 1;
             if (monster === MonsterType.Corn) {
-                new Corn(this.scene, position, this);
-                //console.log('spawn a corn!');
+                new Corn(this.scene, position, this,this.financialBody);
             } else if (monster === MonsterType.Gumball) {
-                new Gumball(this.scene, position, this);
-                //console.log('spawn a gumball!');
+                new Gumball(this.scene, position, this,this.financialBody);
             } else {
-                new Mint(this.scene, position, this);
-                //console.log('spawn a mint!');
+                new Mint(this.scene, position, this,this.financialBody);
             }
-            //console.log(this);
         }
     }
 

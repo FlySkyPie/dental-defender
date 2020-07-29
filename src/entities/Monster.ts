@@ -6,11 +6,13 @@ import Player from './Player';
 import Team from '../utils/Team';
 import State from '../utils/MonsterState';
 import DeathRegistration from '../interfaces/DeathRegistration';
+import FinancialBody from '../interfaces/FinancialBody';
 
 abstract class Monster extends Sprite {
     scene: BattlezoneScene;
     primeTarget: Sprite;
     target: Sprite;
+    financialBody: FinancialBody;
     health: number;
     healthMax: number;
     speed: number;
@@ -20,11 +22,15 @@ abstract class Monster extends Sprite {
     isLive: boolean;
     reporter: DeathRegistration;
 
+    bonus: number;
+
     constructor(scene: BattlezoneScene, spawnPoint: [number, number],
-        imageKey: string, health: number, speed: number, reporter: DeathRegistration) {
+        imageKey: string, health: number, speed: number, reporter: DeathRegistration,
+        financialBody: FinancialBody) {
         super(scene, spawnPoint[0], spawnPoint[1], imageKey);
         this.reporter = reporter;
         this.target = this.primeTarget = scene.getTooth();
+        this.financialBody = financialBody;
         this.scene = scene;
         this.scene.add.existing(this);
 
@@ -33,6 +39,7 @@ abstract class Monster extends Sprite {
         this.team = Team.Blue;
         this.state = State.Tracking;
         this.healthBar = this.scene.add.sprite(this.x, this.y + 20, 'turret_health_bar');
+        this.bonus = 0;
 
         //physic stuff
         this.scene.physics.add.existing(this);
@@ -78,6 +85,7 @@ abstract class Monster extends Sprite {
         this.health -= hitPoint;
         if (this.health <= 0) {
             //TODO: player get money or score.
+            this.financialBody.earn(this.bonus);
             this.destroy();
         }
     }

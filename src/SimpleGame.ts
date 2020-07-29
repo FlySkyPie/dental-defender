@@ -42,6 +42,7 @@ class SimpleGame {
 
             let controller = new PlayerController(battlezoneScene, stuffs[0], gameMonitor, stuffs[1]);
             controller.start();
+            waveManager.setFinancialBody(controller);
             
             waveManager.start();
         })
