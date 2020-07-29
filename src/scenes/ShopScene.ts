@@ -1,12 +1,15 @@
 import 'phaser';
 import SceneSwitcher from '../interfaces/SceneSwitcher';
 import BalanceMonitor from '../interfaces/BalanceMonitor'
+import FinancialBody from '../interfaces/FinancialBody';
+import Item from '../utils/Item';
 
 class ShopScene extends Phaser.Scene implements BalanceMonitor {
     private switcher: SceneSwitcher;
     waveTimeText: Phaser.GameObjects.Text | undefined;
     accuracyText: Phaser.GameObjects.Text | undefined;
     moneyText: Phaser.GameObjects.Text | undefined;
+    financialBody: FinancialBody | undefined;
 
     slotTexts: Array<Phaser.GameObjects.Text>;
     constructor(switcher: SceneSwitcher) {
@@ -15,8 +18,15 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         this.slotTexts = [];
     }
 
-    preload() {
+    setFinancialBody(financialBody: FinancialBody) {
+        this.financialBody = financialBody;
+    }
 
+    private buyStuff(item: Item) {
+        if (this.financialBody !== undefined){
+            return this.financialBody.buy(item);
+        }
+        return false;
     }
 
     create() {
@@ -35,7 +45,7 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         this.add.text(700, 415, "to full health", {font: "14px monospace", fill: '#ffffff'});
         this.add.text(700, 440, "Cost: " + "650", {font: "14px monospace", fill: '#ffffff'});
         this.addButton([880, 410], 'buy_btn', () => {
-            //TODO: buy hammer
+            this.buyStuff(Item.Hammer);
         });
 
 
@@ -48,7 +58,7 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         this.add.text(700, 200, "Damage: 5 (x1)", {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.add.text(700, 220, "Cost: " + '800', {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.addButton([880, 190], 'buy_btn', () => {
-            //TODO: buy small turret
+            this.buyStuff(Item.SmallTurret);
         });
 
         //Turret big
@@ -60,7 +70,7 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         this.add.text(700, 310, "Damage: 8 (x3)", {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.add.text(700, 330, "Cost: " + '1500', {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.addButton([880, 300], 'buy_btn', () => {
-            //TODO: buy big turret
+            this.buyStuff(Item.BigTurret);
         });
 
         //First Aid
@@ -69,8 +79,8 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         this.add.text(700, 510, "Heals the player", {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.add.text(700, 525, "for 50 HP", {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
         this.add.text(700, 550, "Cost: " + "500", {font: "14px monospace", fill: '#ffffff'}).setOrigin(0);
-        this.addButton([880, 300], 'buy_btn', () => {
-            //TODO: buy first aid
+        this.addButton([880, 520], 'buy_btn', () => {
+            this.buyStuff(Item.Aid);
         });
 
         let readyButton = this.addButton([645, 640], 'ready_btn', () => {

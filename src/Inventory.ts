@@ -5,7 +5,7 @@ class Inventory {
     private stock: [number, number, number];
 
     constructor() {
-        this.money = 0;
+        this.money = 10000;//test
         this.stock = [10, 10, 10];
     }
     
@@ -68,7 +68,7 @@ class Inventory {
             case Item.BigTurret:
                 return 1500;
             default:
-                return 500;
+                return 500; //aid
         }
     }
 

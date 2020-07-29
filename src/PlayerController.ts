@@ -95,6 +95,9 @@ class PlayerController implements FinancialBody {
         if (isBuy){
             this.monitor.updateStock(this.inventory.getStock());
             this.monitor.updateMoney(this.inventory.getMoney());
+            if (item === Item.Aid){
+                this.player.heal(100);
+            }
         }
         return isBuy;
     }
