@@ -1,0 +1,68 @@
+[
+	{
+		  "corn": 10
+		, "gumball": 0
+		, "mint": 0
+		, "moment": 1 
+	}
+	,{
+		  "corn": 6
+		, "gumball": 4
+		, "mint": 0
+		, "moment": 1 	
+	}
+	, {
+		  "corn": 5
+		, "gumball": 5
+		, "mint": 15
+		, "moment": 2 	
+	}
+	, {
+		  "corn": 3
+		, "gumball": 10
+		, "mint": 7
+		, "moment": 2 	
+	}
+	, {
+		  "corn": 10
+		, "gumball": 10
+		, "mint": 10
+		, "moment": 2 	
+	}
+	, {
+		  "corn": 10
+		, "gumball": 10
+		, "mint": 10
+		, "moment": 3 
+	}
+	, {
+		  "corn": 20
+		, "gumball": 20
+		, "mint": 20
+		, "moment": 4
+	}
+	, {
+		  "corn": 10
+		, "gumball": 20
+		, "mint": 20
+		, "moment": 4
+	}
+	, {
+		  "corn": 10
+		, "gumball": 10
+		, "mint": 40
+		, "moment": 4
+	}
+	, {
+		  "corn": 40
+		, "gumball": 40
+		, "mint": 40
+		, "moment": 5
+	}
+	, {
+		  "corn": 40
+		, "gumball": 40
+		, "mint": 40
+		, "moment": 7
+	}
+]

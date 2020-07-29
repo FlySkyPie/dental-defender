@@ -12,6 +12,8 @@ import GameMonitor from './GameMonitor';
 import PlayerController from './PlayerController';
 import StateManager from './StateManager';
 
+import WaveManager from './WaveManager';
+
 class SimpleGame {
 
     /*
@@ -31,6 +33,8 @@ class SimpleGame {
         let hudScene = new HUDScene(stateManager);
         let shopScene = new ShopScene(stateManager);
         let loadScene = new LoadScene(stateManager);
+        
+        let waveManager = new WaveManager(battlezoneScene, stateManager);
 
         stateManager.setSatrBattleCallback(() => {
             let gameMonitor = new GameMonitor(hudScene, shopScene);
@@ -38,8 +42,13 @@ class SimpleGame {
 
             let controller = new PlayerController(battlezoneScene, stuffs[0], gameMonitor, stuffs[1]);
             controller.start();
-
+            
+            waveManager.start();
         })
+        
+        stateManager.setbackToBattleCallback(()=>{
+            waveManager.startBattle();
+        });
 
         stateManager.setBattlezoneScene(battlezoneScene)
             .setMenuScene(menuScene)

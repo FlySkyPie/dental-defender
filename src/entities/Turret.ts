@@ -169,8 +169,10 @@ class Turret extends Phaser.GameObjects.Sprite {
      * Game over when the tooth has been destroyed.
      */
     destroy() {
-        this.scene.game.scene.start('game-over');
-        this.scene.game.scene.sleep('battlezone');
+        this.isLive = false;
+        if (this.healthBar !== undefined) {
+            this.healthBar.destroy();
+        }
         super.destroy();
     }
 
@@ -178,7 +180,7 @@ class Turret extends Phaser.GameObjects.Sprite {
         if (this.healthBar === undefined) {
             return;
         }
-        let healthRatio = (this.health / this.healthMax);
+        let healthRatio = ((this.health < 0 ? 0 : this.health) / this.healthMax);
         healthRatio = parseFloat(healthRatio.toFixed(1));
 
         this.healthBar.setFrame(10 - (healthRatio * 10));

@@ -56,13 +56,17 @@ class BattlezoneScene extends Phaser.Scene {
         let animationLoader = new AnimationLoader();
         animationLoader.load(this);
 
-        let holyTooth = new Tooth(this, [800, 400]);
+        let holyTooth = new Tooth(this, [800, 400], this.switcher);
 
         //new HeadUpDisplay(this, 0, 0);
 
         //test
-        new Gumball(this, [1250, 300]);
+        //new Gumball(this, [1250, 300]);
         new Turret(this, [1300, 300], TurretType.Small);
+        new Turret(this, [800, 500], TurretType.Big);
+        new Turret(this, [800, 300], TurretType.Big);
+        new Turret(this, [900, 400], TurretType.Big);
+        new Turret(this, [700, 400], TurretType.Big);
 
         this.collisionLoader = new CollisionLoader(this);
         this.collisionLoader.addPlayersGroup(this.playersGroup)
@@ -107,7 +111,7 @@ class BattlezoneScene extends Phaser.Scene {
     }
 
     createPlayer(): [Player, Cursor] {
-        let player = new Player(this, [800, 300]);
+        let player = new Player(this, [800, 300],this.switcher);
         const camera = this.cameras.main;
         camera.startFollow(player);
         let bounds = this.physics.world.bounds;

@@ -74,9 +74,7 @@ class ShopScene extends Phaser.Scene implements BalanceMonitor {
         });
 
         let readyButton = this.addButton([645, 640], 'ready_btn', () => {
-            this.scene.sleep();
-            this.game.scene.wake('battlezone');
-            this.game.scene.wake('hud-scene');
+            this.switcher.backToBattle();
         })
         this.scene.sleep();
         this.switcher.reportStandby(this);

@@ -1,15 +1,17 @@
 import 'phaser';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import Group = Phaser.GameObjects.Group;
+import SceneSwitcher from '../interfaces/SceneSwitcher';
 
 class Tooth extends Phaser.GameObjects.Sprite {
     scene: BattlezoneScene;
     health: number;
     healthMax: number;
     healthBar: Phaser.GameObjects.Sprite;
-
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
+    switcher: SceneSwitcher;
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], switcher: SceneSwitcher) {
         super(scene, spawnPoint[0], spawnPoint[1], 'tooth');
+        this.switcher = switcher;
         this.scene = scene;
         this.scene.add.existing(this);
 
@@ -45,9 +47,8 @@ class Tooth extends Phaser.GameObjects.Sprite {
      * Game over when the tooth has been destroyed.
      */
     destroy() {
-        this.scene.game.scene.start('game-over');
-        this.scene.game.scene.sleep('battlezone');
-        super.destroy();
+        this.switcher.gameover(false);
+        //super.destroy();
     }
 }
 

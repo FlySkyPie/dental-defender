@@ -4,13 +4,14 @@ import Monster from './Monster';
 import Bullet from './Bullet';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
+import DeathRegistration from '../interfaces/DeathRegistration';
 
 class Gumball extends Monster {
     damageTimer: number;
     attackTimer: number;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
-        super(scene, spawnPoint, 'gumball', 80, 70);
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number],reporter: DeathRegistration) {
+        super(scene, spawnPoint, 'gumball', 80, 70, reporter);
 
         this.damageTimer = 0;
         this.attackTimer = Date.now();

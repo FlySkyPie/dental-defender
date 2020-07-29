@@ -3,12 +3,13 @@ import Sprite = Phaser.GameObjects.Sprite;
 import Monster from './Monster';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
+import DeathRegistration from '../interfaces/DeathRegistration';
 
 class Mint extends Monster {
     damageTimer: number;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
-        super(scene, spawnPoint, 'mint', 20, 200);
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], reporter: DeathRegistration) {
+        super(scene, spawnPoint, 'mint', 20, 200, reporter);
 
         this.target = (scene.getTooth() as Sprite);
         this.damageTimer = 0;
@@ -27,7 +28,7 @@ class Mint extends Monster {
 
         if (this.state === State.Tracking) {
             if (!this.isWithinFollowingRange(this.target)) {
-                 this.target = this.primeTarget;
+                this.target = this.primeTarget;
             }
             this.moveTowards(this.target);
         }

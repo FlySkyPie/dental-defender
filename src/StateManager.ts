@@ -77,6 +77,18 @@ class StateManager implements SceneSwitcher {
         this.satrBattleCallback = callback;
     }
 
+    public setGoShopCallback(callback: () => any) {
+        this.goShopCallback = callback;
+    }
+
+    public setbackToBattleCallback(callback: () => any) {
+        this.backToBattleCallback = callback;
+    }
+
+    public setGameoverCallback(callback: () => any) {
+        this.gameoverCallback = callback;
+    }
+
     public startGame() {
         if (this.loadScene === undefined) {
             return;
@@ -159,6 +171,10 @@ class StateManager implements SceneSwitcher {
         }
         this.state = GameState.Shop;
 
+        if (this.goShopCallback !== undefined) {
+            this.goShopCallback();
+        }
+
         this.game.scene.sleep('battlezone');
         this.game.scene.sleep('hud-scene');
         this.game.scene.wake('shop-scene');
@@ -170,6 +186,10 @@ class StateManager implements SceneSwitcher {
         }
         this.state = GameState.Battle;
 
+        if (this.backToBattleCallback !== undefined) {
+            this.backToBattleCallback();
+        }
+
         this.game.scene.sleep('shop-scene');
         this.game.scene.wake('battlezone');
         this.game.scene.wake('hud-scene');
@@ -180,6 +200,10 @@ class StateManager implements SceneSwitcher {
             throw "Gameover at wrong game state!";
         }
         this.state = GameState.Gameover;
+
+        if (this.gameoverCallback !== undefined) {
+            this.gameoverCallback();
+        }
 
         (this.gameoverScene as GameoverScene).setResult(isWin)
             .scene.wake();

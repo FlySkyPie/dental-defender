@@ -6,6 +6,7 @@ import BattlezoneScene from '../scenes/BattlezoneScene';
 import Team from '../utils/Team';
 import Direction from '../utils/Direction';
 import MainRole from '../interfaces/MainRole';
+import SceneSwitcher from '../interfaces/SceneSwitcher';
 
 class Player extends Phaser.GameObjects.Sprite implements MainRole {
     scene: BattlezoneScene;
@@ -21,9 +22,12 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
     direction: Direction;
     underAttack: boolean;
     underAttackTimer: number;
+    
+    switcher: SceneSwitcher;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number],switcher: SceneSwitcher) {
         super(scene, spawnPoint[0], spawnPoint[1], 'player');
+        this.switcher = switcher;
         this.scene = scene;
         this.scene.add.existing(this);
         this.setSize(36, 36);
@@ -135,6 +139,10 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
             this.health = this.healthMax;
         }
         this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
+    }
+    
+    destroy(){
+        this.switcher.gameover(false);
     }
 }
 

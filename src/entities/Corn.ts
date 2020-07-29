@@ -3,12 +3,13 @@ import Sprite = Phaser.GameObjects.Sprite;
 import Monster from './Monster';
 import BattlezoneScene from '../scenes/BattlezoneScene';
 import State from '../utils/MonsterState';
+import DeathRegistration from '../interfaces/DeathRegistration';
 
 class Corn extends Monster {
     damageTimer: number;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number]) {
-        super(scene, spawnPoint, 'corn', 50, 100);
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], reporter: DeathRegistration) {
+        super(scene, spawnPoint, 'corn', 50, 100, reporter);
 
         this.damageTimer = 0;
         this.anims.play('corn-left', true);
@@ -26,7 +27,7 @@ class Corn extends Monster {
 
         if (this.state === State.Tracking) {
             if (!this.isWithinFollowingRange(this.target)) {
-                 this.target = this.primeTarget;
+                this.target = this.primeTarget;
             }
             this.moveTowards(this.target);
         }

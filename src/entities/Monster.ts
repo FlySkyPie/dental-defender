@@ -5,6 +5,7 @@ import BattlezoneScene from '../scenes/BattlezoneScene';
 import Player from './Player';
 import Team from '../utils/Team';
 import State from '../utils/MonsterState';
+import DeathRegistration from '../interfaces/DeathRegistration';
 
 abstract class Monster extends Sprite {
     scene: BattlezoneScene;
@@ -17,10 +18,12 @@ abstract class Monster extends Sprite {
     team: Team;
     state: State;
     isLive: boolean;
+    reporter: DeathRegistration;
 
     constructor(scene: BattlezoneScene, spawnPoint: [number, number],
-        imageKey: string, health: number, speed: number) {
+        imageKey: string, health: number, speed: number, reporter: DeathRegistration) {
         super(scene, spawnPoint[0], spawnPoint[1], imageKey);
+        this.reporter = reporter;
         this.target = this.primeTarget = scene.getTooth();
         this.scene = scene;
         this.scene.add.existing(this);
@@ -85,14 +88,14 @@ abstract class Monster extends Sprite {
         this.healthBar.x = this.x;
         this.healthBar.y = this.y + 24;
 
-        let healthRatio = (this.health / this.healthMax);
+        let healthRatio = ((this.health < 0 ? 0 : this.health) / this.healthMax);
         healthRatio = parseFloat(healthRatio.toFixed(1));
         this.healthBar.setFrame(10 - (healthRatio * 10));
     }
 
     destroy() {
         this.isLive = false;
-        //TODO: create particle.
+        this.reporter.reportDestroyed(this);
         this.scene.sound.play('baddie_die_sfx', {volume: 0.1});
         this.healthBar.destroy();
         super.destroy();
