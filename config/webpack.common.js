@@ -4,8 +4,7 @@ module.exports = {
   entry: path.join(__dirname, '../src/main.ts'),
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '../public/js'),
-    publicPath:'./public'
+    path: path.join(__dirname, '../public/js')
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

@@ -5,8 +5,8 @@ class Inventory {
     private stock: [number, number, number];
 
     constructor() {
-        this.money = 10000;//test
-        this.stock = [10, 10, 10];
+        this.money = 0;
+        this.stock = [0, 0, 0];
     }
     
     getStock(){

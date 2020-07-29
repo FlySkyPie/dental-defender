@@ -58,16 +58,6 @@ class BattlezoneScene extends Phaser.Scene {
 
         let holyTooth = new Tooth(this, [800, 400], this.switcher);
 
-        //new HeadUpDisplay(this, 0, 0);
-
-        //test
-        //new Gumball(this, [1250, 300]);
-        new Turret(this, [1300, 300], TurretType.Small);
-        new Turret(this, [800, 500], TurretType.Big);
-        new Turret(this, [800, 300], TurretType.Big);
-        new Turret(this, [900, 400], TurretType.Big);
-        new Turret(this, [700, 400], TurretType.Big);
-
         this.collisionLoader = new CollisionLoader(this);
         this.collisionLoader.addPlayersGroup(this.playersGroup)
             .addWallsLayer(this.wallsLayer)
@@ -77,13 +67,6 @@ class BattlezoneScene extends Phaser.Scene {
             .addMonsterBulletGroup(this.monsterBulletGroup)
             .addTeethGroup(this.teethGroup).load();
 
-        this.physics.world.createDebugGraphic();
-        const debugGraphics = this.add.graphics().setAlpha(0.75);
-        this.wallsLayer.renderDebug(debugGraphics, {
-            tileColor: null, // Color of non-colliding tiles
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        });
         this.scene.sleep();
         this.switcher.reportStandby(this);
     }
