@@ -11,6 +11,7 @@ import TurretType from '../utils/TurretType';
 import AnimationLoader from '../loaders/AnimationLoader';
 import CollisionLoader from '../loaders/CollisionLoader';
 import SceneSwitcher from '../interfaces/SceneSwitcher';
+import CharacterMonitor from '../interfaces/CharacterMonitor';
 
 class BattlezoneScene extends Phaser.Scene {
     map: Phaser.Tilemaps.Tilemap | undefined;
@@ -93,8 +94,8 @@ class BattlezoneScene extends Phaser.Scene {
         return undefined;
     }
 
-    createPlayer(): [Player, Cursor] {
-        let player = new Player(this, [800, 300],this.switcher);
+    createPlayer(monitor: CharacterMonitor): [Player, Cursor] {
+        let player = new Player(this, [800, 300], this.switcher, monitor);
         const camera = this.cameras.main;
         camera.startFollow(player);
         let bounds = this.physics.world.bounds;

@@ -7,6 +7,7 @@ import Team from '../utils/Team';
 import Direction from '../utils/Direction';
 import MainRole from '../interfaces/MainRole';
 import SceneSwitcher from '../interfaces/SceneSwitcher';
+import CharacterMonitor from '../interfaces/CharacterMonitor';
 
 class Player extends Phaser.GameObjects.Sprite implements MainRole {
     scene: BattlezoneScene;
@@ -22,11 +23,14 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
     direction: Direction;
     underAttack: boolean;
     underAttackTimer: number;
-    
-    switcher: SceneSwitcher;
 
-    constructor(scene: BattlezoneScene, spawnPoint: [number, number],switcher: SceneSwitcher) {
+    switcher: SceneSwitcher;
+    monitor: CharacterMonitor;
+
+    constructor(scene: BattlezoneScene, spawnPoint: [number, number], switcher: SceneSwitcher,
+        monitor: CharacterMonitor) {
         super(scene, spawnPoint[0], spawnPoint[1], 'player');
+        this.monitor = monitor;
         this.switcher = switcher;
         this.scene = scene;
         this.scene.add.existing(this);
@@ -109,7 +113,7 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
         this.underAttack = true;
         this.underAttackTimer = Date.now() + 500;
         this.health -= hitPoint;
-        this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
+        this.monitor.updateHealth(this.health, this.healthMax);
         if (this.health <= 0) {
             this.scene.switcher.gameover(false);
             //this.destroy();
@@ -138,10 +142,10 @@ class Player extends Phaser.GameObjects.Sprite implements MainRole {
         if (this.health > this.healthMax) {
             this.health = this.healthMax;
         }
-        this.scene.events.emit('hud.updateHealth', this.health, this.healthMax);
+        this.monitor.updateHealth(this.health, this.healthMax);
     }
-    
-    destroy(){
+
+    destroy() {
         this.switcher.gameover(false);
     }
 }
